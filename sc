@@ -187,6 +187,7 @@ case $sc_resource in
   (r |resolve)
     resolve_ $sc_command
     typeset -a resolved=(${(s: :)sc_return})
-    output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" ${resolved[1]%%s}
+    output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" \
+      ${resolved[1]%%s}
     ;;
 esac
