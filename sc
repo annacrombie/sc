@@ -173,8 +173,20 @@ case $sc_resource in
       *) users_dl_ $@;;
     esac;;
   (t | tracks)
-    case $sc_command in
-      (s | search) tracks_search_ $@;;
-      (dl | download) tracks_dl_ $@;;
-    esac;;
+    cat - | while read line; do
+      typeset -a data=(${(s: :)line})
+      case $data[1] in
+        track_id) echo $line;;
+        user_id)
+          get_ "users/$data[2]/tracks"
+          split_ 'tracks' $sc_return
+          output_ $sc_return 'tracks'
+          ;;
+      esac
+    done;;
+  (r |resolve)
+    resolve_ $sc_command
+    typeset -a resolved=(${(s: :)sc_return})
+    output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" ${resolved[1]%%s}
+    ;;
 esac
