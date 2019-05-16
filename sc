@@ -130,7 +130,7 @@ resolve_() {
 split_() {
   typeset ep=$1
   typeset data=$2
-  typeset -A ids=($(jq -Mr '.[] | .id' $data))
+  typeset -a ids=($(jq -Mr '.[] | .id' $data))
   typeset i=0
 
   for id in $ids; do
