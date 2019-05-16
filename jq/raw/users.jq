@@ -1,1 +1,1 @@
-[.[] | "user_id \(.id)"]|join("\n")
+[.[0:($limit|tonumber)][] | "user_id \(.id)"]|join("\n")

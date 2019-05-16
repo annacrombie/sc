@@ -1,5 +1,5 @@
 #username,permalink,pro?,desc
-[.[]
+[.[0:($limit|tonumber)][]
   | [.username,
      .permalink,
      if .plan == "Pro" then
