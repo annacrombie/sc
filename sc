@@ -146,26 +146,6 @@ output_() {
   fi
 }
 
-users_search_() {
-  search_ 'users' $@
-  if [[ $sc_tty ]]; then
-    display_ $sc_return search/users
-  else
-    jq -Mr '[.[] | "user_id \(.id)"]|join("\n")' "$sc_return"
-  fi
-}
-
-tracks_search_() {
-  search_ 'tracks' $@
-  display_ $sc_return search/tracks
-}
-
-tracks_dl_() {
-  for track in $@; do
-    get_ 'tracks'
-  done
-}
-
 typeset -g sc_tty
 [[ -t 1 ]] && sc_tty=true
 
@@ -181,8 +161,11 @@ shift 2
 case $sc_resource in
   (s | search)
     case $sc_command in
-      (u | users) users_search_ $@;;
-      (t | tracks) users_search_ $@;;
+      (users | tracks)
+        search_ $sc_command $@
+        split_ $sc_command $sc_return;;
+      *)
+        die_ "invalid search type $sc_command";;
     esac;;
   (u | user)
     case $sc_command in
