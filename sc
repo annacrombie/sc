@@ -210,8 +210,8 @@ case $sc_resource in
             mkdir -p "$outd"
             build_url_ "${td[stream_url]}"
             [[ $otty ]] && echo "fetching $td[artist] - $td[title]"
-            wcache "$prog" -l -c "$sc_dirs[cache]" -b inf -O "$outf" "$sc_return" \
-              || die_ "failed to get file"
+            wcache "$prog" -l -c "$sc_dirs[cache]" -b inf -O "$outf" \
+              "$sc_return" || die_ "failed to get file"
 
             [[ ! $otty ]] && echo "file://${outf:a}"
             ;;
@@ -288,4 +288,6 @@ case $sc_resource in
         $sc_exec play
     fi
     ;;
+  *)
+    $sc_exec fetch $sc_resource $sc_trailing;;
 esac
