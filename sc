@@ -178,7 +178,12 @@ optparse_disp[desc]='soundloud client'
 typeset -gA opts=(take= "set the limit on results")
 typeset -gA optalias=(t take=)
 
+
 optparse_parse_ opts optalias $@
+
+if [[ $optparse_result[take] ]]; then
+  typeset -a sc_exec=($sc_exec --take=$optparse_result[take])
+fi
 
 typeset sc_resource=$optparse_trailing[1]
 typeset -a sc_trailing=(${optparse_trailing[2,-1]})
@@ -186,19 +191,29 @@ typeset -a sc_trailing=(${optparse_trailing[2,-1]})
 case $sc_resource in
   (f | fetch)
     if [[ $sc_pipe ]]; then
+      typeset prog=""
+      typeset otty
+      if [[ $sc_tty ]]; then
+        prog="--bar"
+        otty=true
+        unset sc_tty
+      fi
+
       cat - | while read line; do
         typeset -a data=(${(s: :)line})
         case $data[1] in
           track_id)
             get_ "tracks/$data[2]"
-            unset sc_tty
             eval "typeset -A td=($(output_ "$sc_return" "desc/track"))"
             typeset outd="${sc_dirs[tracks]}/${td[artist]//\//%}"
             typeset outf="${outd}/${td[title]//\//%}.${td[ext]}"
             mkdir -p "$outd"
             build_url_ "${td[stream_url]}"
-            echo "fetching ${outf}"
-            wcache -c "$sc_dirs[cache]" -l -b 99999999 -O "$outf" "$sc_return"
+            [[ $otty ]] && echo "fetching $td[artist] - $td[title]"
+            wcache "$prog" -l -c "$sc_dirs[cache]" -b inf -O "$outf" "$sc_return" \
+              || die_ "failed to get file"
+
+            [[ ! $otty ]] && echo "file://${outf:a}"
             ;;
         esac
       done
