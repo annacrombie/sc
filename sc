@@ -19,8 +19,13 @@ sc_dirs=(
 
 typeset dir
 for dir in ${(v)sc_dirs}; do
-  mkdir -vp "$dir"
+  mkdir -p "$dir"
 done
+
+die_() {
+  echo "$@" >&2
+  exit 1
+}
 
 load_keys_() {
   source "$sc_keyfile"
