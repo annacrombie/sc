@@ -275,6 +275,9 @@ case $sc_resource in
     output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" \
       ${resolved[1]%%s}
     ;;
+  (ls | library)
+    tree -C "$sc_dirs[tracks]"
+    ;;
   (p | play)
     if [[ $sc_pipe ]]; then
       typeset plst=$(mktemp)
