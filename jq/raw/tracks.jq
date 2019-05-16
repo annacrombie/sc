@@ -1,1 +1,2 @@
-[.[0:($limit|tonumber)][] | "track_id \(.id)"]|join("\n")
+[.|if $limit == "" then .[] else .[0:($limit|tonumber)][] end]
+  |[.[] | "track_id \(.id)"]|join("\n")

@@ -1,4 +1,4 @@
 #title,permalink
-[.[0:($limit|tonumber)][]
-  | [.title,"\(.user.permalink)/\(.permalink)"] | join("|")]
+[.|if $limit == "" then .[] else .[0:($limit|tonumber)][] end]
+  | [ .[] | [.title,"\(.user.permalink)/\(.permalink)"] | join("|")]
   | join("\n")

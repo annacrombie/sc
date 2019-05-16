@@ -144,9 +144,9 @@ split_() {
 jq_() {
  typeset jq="$1"
  typeset data="$2"
- typeset lim="${optparse_result[take]:--1}"
+ typeset lim=${optparse_result[take]}
 
- jq -Mr --arg limit $lim -f "$jq" "$data"
+ jq -Mr --arg limit "$lim" -f "$jq" "$data"
 }
 
 output_() {
