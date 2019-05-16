@@ -173,8 +173,9 @@ typeset -g sc_tty
 typeset -g sc_pipe
 [[ -t 0 ]] || sc_pipe=true
 
-optparse_disp[banner]="Usage: $sc_name [OPTIONS] COMMAND [QUERY]"
-optparse_disp[desc]='soundcloud client, conforming to unix philosophy'
+optparse_disp[banner]="Usage: sc [OPTIONS] COMMAND [QUERY]"
+optparse_disp[desc]="A lightweight soundcloud client, conforming to unix \
+philosophy."
 optparse_disp[info]='
 COMMANDS
   d, describe   - describe input object(s), or re-run after resolve Q
@@ -197,8 +198,8 @@ OBJECTS
 
 CACHE
   sc internally uses wcache(1) which is a thin wrapper around wget(1) that
-  caches downloads for long periods of time.  For this reason, repeated sc
-  querys will not touch the network.
+  caches downloads for relatively long periods of time.  For this reason,
+  repeated sc querys will not touch the network.
 
   If I first run (getting the first track for an artist)
 
@@ -209,8 +210,7 @@ CACHE
     sc -t 1 users tennyson | sc -t 1 tracks | sc fetch
 
   Only the final pipe touches the network, since all necessarry metadata has
-  already been fetched.
-'
+  already been fetched.'
 typeset -gA opts=(take= "set the limit on results")
 typeset -gA optalias=(t take=)
 
