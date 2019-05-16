@@ -48,16 +48,23 @@ build_paramstr_() {
   done
 }
 
+build_url_() {
+  typeset base="$1"; shift
+  typeset -A params=($@)
+
+  load_keys_
+  params[client_id]="$sc_keys[$sc_keyid]"
+  build_paramstr_ ${(kv)params}
+
+  build_paramstr_ ${(kv)params}
+  sc_return="${base}?${sc_return}"
+}
+
 get_api_url_() {
   typeset endpoint="$1"; shift
   typeset -A params=($@)
 
-  load_keys_
-  build_paramstr_ ${(kv)params}
-  params[client_id]="$sc_keys[$sc_keyid]"
-  build_paramstr_ ${(kv)params}
-
-  sc_return="${sc_api}/${endpoint}?${sc_return}"
+  build_url_ "${sc_api}/${endpoint}" ${(kv)params}
 }
 
 get_() {
