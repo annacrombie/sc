@@ -140,13 +140,20 @@ split_() {
   done
 }
 
+extract_collection_() {
+  typeset data="$1"
+  typeset f=$(mktemp)
+
+  jq -Mc ".collection" "$data" > "$f"
+  mv "$f" "$data"
+}
 
 jq_() {
  typeset jq="$1"
  typeset data="$2"
  typeset lim=${optparse_result[take]}
 
- jq -Mr --arg limit "$lim" -f "$jq" "$data"
+ jq -Mr --arg limit "$lim" -f "$jq" "$data" || die_ "jq error in $jq"
 }
 
 output_() {
@@ -285,6 +292,22 @@ case $sc_resource in
     else
       search_ 'users' $sc_trailing
       split_ 'users' $sc_return
+    fi;;
+  (followings | followers)
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        case $data[1] in
+          user_id)
+            get_ "users/$data[2]/$sc_resource"
+            extract_collection_ $sc_return
+            split_ 'users' $sc_return
+            output_ $sc_return 'users'
+            ;;
+        esac
+      done
+    else
+      $sc_exec resolve $sc_trailing | sc users | sc $sc_resource
     fi;;
   (t | tracks)
     if [[ $sc_pipe ]]; then
