@@ -72,33 +72,67 @@ get_() {
 
   typeset endpoint="$1"; shift
   typeset -A params=($@)
+  get_api_url_ $endpoint ${(kv)params}
+
   [[ -n "$key" ]] && key="--key=${key}"
   [[ $force ]] && force="--best-by=0"
 
-  load_keys_
-  build_paramstr_ ${(kv)params}
-  params[client_id]="$sc_keys[$sc_keyid]"
-  build_paramstr_ ${(kv)params}
+  sc_return="$(wcache --cache=$sc_dirs[cache] $force $key --echo-output \
+    "${sc_return}")"
 
-  sc_return="$(wcache --cache="./cache" "$force" "$key" --echo-output \
-    "${sc_api}/${endpoint}?${sc_return}")"
-}
-
-get_track_() {
-  get_ "tracks/$1"
-}
-
-get_user_() {
-  get_ "users/$1"
+  [[ -z "$sc_return" ]] && die_ "failed to get anything"
 }
 
 search_() {
   typeset ep="$1"; shift
   typeset query="$@"
+  [[ -z $query ]] && die_ "no query given"
+
   get_ -k "?${query// /+}" "$ep" 'q' "${query// /+}"
+
+  output_ $sc_return search/$ep
 }
 
-display_() {
+resolve_() {
+  typeset pl="$1"; shift
+  typeset d="$sc_dirs[cache]/api.soundcloud.com/"
+  typeset f="$d/resolve/${pl}@"
+  typeset rsv
+
+  if [[ -L "$f" ]]; then
+    sc_return="${${(s:/:)f:A}[-2,-1]}"
+    return
+  fi
+
+  get_api_url_ 'resolve' 'url' "https://soundcloud.com/$pl"
+  rsv="$(wget -qSO- --spider --max-redirect=0 "$sc_return" 2>&1 | \
+    grep Location | \
+    sed 's/.*Location: https:\/\/api.soundcloud.com\/\(.*\)?.*/\1/g')"
+
+  [[ -z "$rsv" ]] && die_ "failed to resolve $pl :("
+
+  mkdir -p "${f:h}"
+
+  ln -sr "$d/$rsv$" "$f"
+  get_ "$rsv"
+  typeset -a rsv=(${(s:/:)rsv})
+  sc_return="$rsv$"
+}
+
+split_() {
+  typeset ep=$1
+  typeset data=$2
+  typeset -A ids=($(jq -Mr '.[] | .id' $data))
+  typeset i=0
+
+  for id in $ids; do
+    [[ -f "${sc_dirs[cache]}/api.soundcloud.com/$ep/$id$" ]] && continue
+    jq -Mc ".[$i]" "$data" > "${sc_dirs[cache]}/api.soundcloud.com/$ep/$id$"
+    ((i+=1))
+  done
+}
+
+output_() {
   typeset data=$1
   if [[ $sc_tty ]]; then
     typeset jq="${sc_path}/jq/disp/$2.jq"
