@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+typeset -g sc_exec="${0:A}"
 typeset -g sc_path="${0:A:h}"
 source "${sc_path}/optparse.zsh"
 
@@ -132,60 +133,100 @@ split_() {
   done
 }
 
+
+jq_() {
+ typeset jq="$1"
+ typeset data="$2"
+ typeset lim="${optparse_result[take]:--1}"
+
+ jq -Mr --arg limit $lim -f "$jq" "$data"
+}
+
 output_() {
   typeset data=$1
   if [[ $sc_tty ]]; then
     typeset jq="${sc_path}/jq/disp/$2.jq"
     typeset cols="$(head -n 1 "$jq")"
 
-    jq -Mr -f "$jq" "$data" | column -s '|' -t -N "${cols##\#}"
+    jq_ "$jq" "$data" |
+      if [[ -n "${cols##\#}" ]]; then
+        column -s '|' -t -N "${cols##\#}"
+      else
+        cat -
+      fi
   else
     typeset jq="${sc_path}/jq/raw/$2.jq"
 
-    jq -Mr -f "$jq" "$data"
+    jq_ "$jq" "$data"
   fi
 }
 
 typeset -g sc_tty
 [[ -t 1 ]] && sc_tty=true
+typeset -g sc_pipe
+[[ -t 0 ]] || sc_pipe=true
 
 optparse_disp[banner]="Usage: $sc_name <resource> <command> <query>"
 optparse_disp[desc]='soundloud client'
-typeset -gA opts=()
-typeset -gA optalias=()
+typeset -gA opts=(take= "set the limit on results")
+typeset -gA optalias=(t take=)
 
-sc_resource=$1
-sc_command=$2
-shift 2
+optparse_parse_ opts optalias $@
+
+typeset sc_resource=$optparse_trailing[1]
+typeset -a sc_trailing=(${optparse_trailing[2,-1]})
 
 case $sc_resource in
-  (s | search)
-    case $sc_command in
-      (users | tracks)
-        search_ $sc_command $@
-        split_ $sc_command $sc_return;;
-      *)
-        die_ "invalid search type $sc_command";;
-    esac;;
-  (u | user)
-    case $sc_command in
-      (i | info) users_info_ $@;;
-      *) users_dl_ $@;;
-    esac;;
+  (d | describe)
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        case $data[1] in
+          user_id)
+            get_ "users/$data[2]"
+            output_ "$sc_return" "desc/user"
+            ;;
+          track_id)
+            get_ "tracks/$data[2]"
+            output_ "$sc_return" "desc/track"
+            ;;
+        esac
+      done
+    else
+      search_ 'users' $sc_trailing
+      split_ 'users' $sc_return
+    fi;;
+  (u | users)
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        case $data[1] in
+          user_id) echo "$line";;
+        esac
+      done
+    else
+      search_ 'users' $sc_trailing
+      split_ 'users' $sc_return
+    fi;;
   (t | tracks)
-    cat - | while read line; do
-      typeset -a data=(${(s: :)line})
-      case $data[1] in
-        track_id) echo $line;;
-        user_id)
-          get_ "users/$data[2]/tracks"
-          split_ 'tracks' $sc_return
-          output_ $sc_return 'tracks'
-          ;;
-      esac
-    done;;
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        case $data[1] in
+          track_id) echo $line;;
+          user_id)
+            get_ "users/$data[2]/tracks"
+            split_ 'tracks' $sc_return
+            output_ $sc_return 'tracks'
+            ;;
+        esac
+      done
+    else
+      search_ 'tracks' $sc_trailing
+      split_ 'tracks' $sc_return
+    fi;;
   (r |resolve)
-    resolve_ $sc_command
+    resolve_ $sc_trailing
     typeset -a resolved=(${(s: :)sc_return})
     output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" \
       ${resolved[1]%%s}
