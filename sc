@@ -177,6 +177,8 @@ typeset sc_resource=$optparse_trailing[1]
 typeset -a sc_trailing=(${optparse_trailing[2,-1]})
 
 case $sc_resource in
+  (f | fetch)
+    ;;
   (d | describe)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
@@ -184,17 +186,18 @@ case $sc_resource in
         case $data[1] in
           user_id)
             get_ "users/$data[2]"
+            [[ $sc_tty ]] && echo "user"
             output_ "$sc_return" "desc/user"
             ;;
           track_id)
             get_ "tracks/$data[2]"
+            [[ $sc_tty ]] && echo "track"
             output_ "$sc_return" "desc/track"
             ;;
         esac
       done
     else
-      search_ 'users' $sc_trailing
-      split_ 'users' $sc_return
+      $sc_exec resolve $sc_trailing | $sc_exec describe
     fi;;
   (u | users)
     if [[ $sc_pipe ]]; then
