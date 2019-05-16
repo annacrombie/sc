@@ -185,7 +185,26 @@ typeset -a sc_trailing=(${optparse_trailing[2,-1]})
 
 case $sc_resource in
   (f | fetch)
-    ;;
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        case $data[1] in
+          track_id)
+            get_ "tracks/$data[2]"
+            unset sc_tty
+            eval "typeset -A td=($(output_ "$sc_return" "desc/track"))"
+            typeset outd="${sc_dirs[tracks]}/${td[artist]//\//%}"
+            typeset outf="${outd}/${td[title]//\//%}.${td[ext]}"
+            mkdir -p "$outd"
+            build_url_ "${td[stream_url]}"
+            echo "fetching ${outf}"
+            wcache -c "$sc_dirs[cache]" -l -b 99999999 -O "$outf" "$sc_return"
+            ;;
+        esac
+      done
+    else
+      $sc_exec resolve $sc_trailing | $sc_exec tracks | $sc_exec fetch
+    fi;;
   (d | describe)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
