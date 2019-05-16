@@ -98,7 +98,7 @@ search_() {
 
   get_ -k "?${query// /+}" "$ep" 'q' "${query// /+}"
 
-  output_ $sc_return search/$ep
+  output_ $sc_return $ep
 }
 
 resolve_() {
