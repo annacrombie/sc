@@ -142,6 +142,10 @@ split_() {
 
 extract_collection_() {
   typeset data="$1"
+
+  is_coll=$(jq -Mrf "${sc_path}/jq/is_collection.jq" "$data")
+  [[ $is_coll = false ]] && return
+
   typeset f=$(mktemp)
 
   jq -Mc ".collection" "$data" > "$f"
