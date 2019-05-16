@@ -173,17 +173,25 @@ typeset -g sc_tty
 typeset -g sc_pipe
 [[ -t 0 ]] || sc_pipe=true
 
-optparse_disp[banner]="Usage: $sc_name <resource> <command> <query>"
-optparse_disp[desc]='soundloud client'
+optparse_disp[banner]="Usage: $sc_name [OPTIONS] COMMAND [QUERY]"
+optparse_disp[desc]='soundcloud client, conforming to unix philosophy'
+optparse_disp[info]='
+COMMANDS
+  d, describe  - describe input object(s)
+  f, fetch     - download input object(s)
+  t, tracks    - get tracks from input
+  u, users     - get users from input
+  p, play      - play input files with mpv(1)
+  r, resolve Q - resolve Q to an object
+  l, library   - display downloaded tracks
+'
 typeset -gA opts=(take= "set the limit on results")
 typeset -gA optalias=(t take=)
 
-
 optparse_parse_ opts optalias $@
 
-if [[ $optparse_result[take] ]]; then
+[[ $optparse_result[take] ]] && \
   typeset -a sc_exec=($sc_exec --take=$optparse_result[take])
-fi
 
 typeset sc_resource=$optparse_trailing[1]
 typeset -a sc_trailing=(${optparse_trailing[2,-1]})
@@ -269,13 +277,13 @@ case $sc_resource in
       search_ 'tracks' $sc_trailing
       split_ 'tracks' $sc_return
     fi;;
-  (r |resolve)
+  (r | resolve)
     resolve_ $sc_trailing
     typeset -a resolved=(${(s: :)sc_return})
     output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" \
       ${resolved[1]%%s}
     ;;
-  (ls | library)
+  (l | library)
     tree -C "$sc_dirs[tracks]"
     ;;
   (p | play)
@@ -292,5 +300,6 @@ case $sc_resource in
     fi
     ;;
   *)
-    $sc_exec fetch $sc_resource $sc_trailing;;
+    $sc_exec fetch $sc_resource $sc_trailing
+    ;;
 esac
