@@ -47,6 +47,18 @@ build_paramstr_() {
   done
 }
 
+get_api_url_() {
+  typeset endpoint="$1"; shift
+  typeset -A params=($@)
+
+  load_keys_
+  build_paramstr_ ${(kv)params}
+  params[client_id]="$sc_keys[$sc_keyid]"
+  build_paramstr_ ${(kv)params}
+
+  sc_return="${sc_api}/${endpoint}?${sc_return}"
+}
+
 get_() {
   typeset key force
 
