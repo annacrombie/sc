@@ -179,6 +179,15 @@ output_() {
   fi
 }
 
+filter_accept_() {
+  typeset -A data=($@)
+
+  [[ -z $data[$sc_filter[1]] ]] && die_ "invalid filter"
+
+  eval "[[ $data[$sc_filter[1]] $sc_filter[2] $sc_filter[3] ]]"
+  return $?
+}
+
 typeset -g sc_tty
 [[ -t 1 ]] && sc_tty=true
 typeset -g sc_pipe
@@ -264,6 +273,18 @@ case $sc_resource in
       done
     else
       $sc_exec resolve $sc_trailing | $sc_exec tracks | $sc_exec fetch
+    fi;;
+  (filter)
+    [[ $#sc_trailing != 3 ]] && die_ "filter must consist of 3 parts"
+    typeset -ga sc_filter=(${sc_trailing[1,3]})
+
+    if [[ $sc_pipe ]]; then
+      cat - | while read line; do
+        typeset -a data=(${(s: :)line})
+        filter_accept_ ${data} && echo "$line"
+      done
+    else
+      die_ "no input"
     fi;;
   (d | describe)
     if [[ $sc_pipe ]]; then
