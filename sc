@@ -287,12 +287,10 @@ case $sc_resource in
         case $data[type] in
           user)
             get_ "users/$data[id]"
-            [[ $sc_tty ]] && echo "user"
             output_ "$sc_return" "desc/user"
             ;;
           track)
             get_ "tracks/$data[id]"
-            [[ $sc_tty ]] && echo "track"
             output_ "$sc_return" "desc/track"
             ;;
         esac
