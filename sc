@@ -225,11 +225,11 @@ case $sc_resource in
             [[ (-z $data[title] || -z $data[artist] || -z $data[ext] || \
               -z $data[stream_url]) ]] && die_ "invalid track data"
 
-            typeset outd="${sc_dirs[tracks]}/${td[artist]//\//%}"
-            typeset outf="${outd}/${td[title]//\//%}.${td[ext]}"
+            typeset outd="${sc_dirs[tracks]}/${data[artist]//\//%}"
+            typeset outf="${outd}/${data[title]//\//%}.${data[ext]}"
             mkdir -p "$outd"
-            build_url_ "${td[stream_url]}"
-            [[ $otty ]] && echo "fetching $td[artist] - $td[title]"
+            build_url_ "${data[stream_url]}"
+            [[ $otty ]] && echo "fetching $data[artist] - $data[title]"
             wcache "$prog" -l -c "$sc_dirs[cache]" -b inf -O "$outf" \
               "$sc_return" || die_ "failed to get file"
 
