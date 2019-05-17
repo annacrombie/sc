@@ -1,5 +1,6 @@
 #username,permalink,pro?,desc
-[.|if $limit == "" then .[] else .[0:($limit|tonumber)][] end]
+import "sc_common" as sc;
+.|sc::lim
   |[.[]
     | [.username,
        .permalink,

@@ -157,7 +157,7 @@ jq_() {
  typeset data="$2"
  typeset lim=${optparse_result[take]}
 
- jq -Mr --arg limit "$lim" -f "$jq" "$data" || die_ "jq error in $jq"
+ jq -Mr -L"${sc_path}/jq" --arg limit "$lim" -f "$jq" "$data" || die_ "jq error in $jq"
 }
 
 output_() {

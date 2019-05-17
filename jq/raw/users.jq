@@ -1,2 +1,2 @@
-[.|if $limit == "" then .[] else .[0:($limit|tonumber)][] end]
-  |[.[] | "user_id \(.id)"]|join("\n")
+import "sc_common" as sc;
+.|sc_lim|[.[] | "user_id \(.id)"]|join("\n")

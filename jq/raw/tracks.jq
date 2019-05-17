@@ -1,2 +1,2 @@
-[.|if $limit == "" then .[] else .[0:($limit|tonumber)][] end]
-  |[.[] | "track_id \(.id)"]|join("\n")
+import "sc_common" as sc;
+.|sc::lim|[.[] | "track_id \(.id)"]|join("\n")
