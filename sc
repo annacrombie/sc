@@ -334,7 +334,7 @@ case $sc_resource in
         case $data[type] in
           track) echo $line;;
           user)
-            get_ "users/$data[id]/tracks"
+            get_ "users/$data[id]/tracks" order created_at limit 100
             split_ 'tracks' $sc_return
             if [[ $optparse_result[detailed] ]]; then
               output_ $sc_return 'desc/tracks'
