@@ -353,6 +353,6 @@ case $sc_resource in
     fi
     ;;
   *)
-    $sc_exec fetch $sc_resource $sc_trailing
+    die_ "unknown command"
     ;;
 esac
