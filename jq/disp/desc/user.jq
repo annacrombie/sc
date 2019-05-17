@@ -1,10 +1,3 @@
 #
-"\(.username) (\(.plan))
-tracks: \(.track_count) followers: \(.followers_count) \(
-.description//""|if . != "" then
-"
-  \(.)"
-else
-  ""
-end
-)"
+import "sc_common" as sc;
+.|user_niced

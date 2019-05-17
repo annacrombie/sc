@@ -1,2 +1,2 @@
 import "sc_common" as sc;
-.|sc::lim|[.[] | "track_id \(.id)"]|join("\n")
+.|sc::lim|[.[] |sc::track_raw]|join("\n")

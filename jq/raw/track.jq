@@ -1,1 +1,2 @@
-"track_id \(.id)"
+import "sc_common" as sc;
+.|sc::track_raw

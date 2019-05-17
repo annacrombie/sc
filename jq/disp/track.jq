@@ -1,2 +1,3 @@
 #title,permalink
-[.title,"\(.user.permalink)/\(.permalink)"] | join("|")
+import "sc_common" as sc;
+.|sc::track_nice

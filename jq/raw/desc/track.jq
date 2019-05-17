@@ -1,1 +1,2 @@
-"track_id \(.id) stream_url \(.stream_url | @sh) artist \(.user.username | @sh) title \(.title | @sh) ext mp3"
+import "sc_common" as sc;
+.|sc::track_rawd

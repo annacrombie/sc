@@ -1,1 +1,2 @@
-"user_id \(.id)"
+import "sc_common" as sc;
+.|sc::user_raw
