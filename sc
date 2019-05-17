@@ -219,11 +219,12 @@ case $sc_resource in
       fi
 
       cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        case $data[1] in
-          track_id)
-            get_ "tracks/$data[2]"
-            eval "typeset -A td=($(output_ "$sc_return" "desc/track"))"
+        eval "typeset -A data=(${line})"
+        case $data[type] in
+          track)
+            [[ (-z $data[title] || -z $data[artist] || -z $data[ext] || \
+              -z $data[stream_url]) ]] && die_ "invalid track data"
+
             typeset outd="${sc_dirs[tracks]}/${td[artist]//\//%}"
             typeset outf="${outd}/${td[title]//\//%}.${td[ext]}"
             mkdir -p "$outd"
@@ -245,40 +246,47 @@ case $sc_resource in
 
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        filter_accept_ ${data} && echo "$line"
+        eval "typeset -A data=(${line})"
+        filter_accept_ ${(kv)data} && echo "$line"
       done
     else
       die_ "no input"
     fi;;
   (sort)
     typeset -A sort_keys
-    case "$sc_trailing[1]" in
-      users)
-        sort_keys=(user_id 2 followers 4 username 6 last_modified 8)
-        ;;
-      tracks)
-        sort_keys=(track_id 2 stream_url 4 artist 6 title 8)
-        ;;
-      *) die_ "what do you want to sort by?"
+    typeset sort_col
+    typeset tmp=$(mktemp)
+
+    cat - > $tmp
+
+    line="$(head -n 1 "$tmp")"
+    eval "typeset -A data=(${line})"
+    case $data[type] in
+      user) sort_keys=(id 2 followers 4 username 6 last_modified 8);;
+      track) sort_keys=(id 2 stream_url 4 artist 6 title 8);;
     esac
 
-    [[ -z $sort_keys[$sc_trailing[2]] ]] && die_ "invalid sort type"
+    sort_col=$sort_keys[$sc_trailing[1]]
 
-    cat - | sort --key=$sort_keys[$sc_trailing[2]]
+    [[ -z $sort_col ]] && \
+      die_ "invalid sort column $sc_trailing[1] for $data[type]"
+
+    sort --key=$sort_col "$tmp"
+
+    rm "$tmp"
     ;;
   (d | describe)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        case $data[1] in
-          user_id)
-            get_ "users/$data[2]"
+        eval "typeset -A data=(${line})"
+        case $data[type] in
+          user)
+            get_ "users/$data[id]"
             [[ $sc_tty ]] && echo "user"
             output_ "$sc_return" "desc/user"
             ;;
-          track_id)
-            get_ "tracks/$data[2]"
+          track)
+            get_ "tracks/$data[id]"
             [[ $sc_tty ]] && echo "track"
             output_ "$sc_return" "desc/track"
             ;;
@@ -290,9 +298,9 @@ case $sc_resource in
   (u | users)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        case $data[1] in
-          user_id) echo "$line";;
+        eval "typeset -A data=(${line})"
+        case $data[type] in
+          user) echo "$line";;
         esac
       done
     else
@@ -301,11 +309,11 @@ case $sc_resource in
     fi;;
   (followings | followers)
     if [[ $sc_pipe ]]; then
-      cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        case $data[1] in
-          user_id)
-            get_ "users/$data[2]/$sc_resource"
+      while read line; do
+        eval "typeset -A data=(${line})"
+        case $data[type] in
+          user)
+            get_ "users/$data[id]/$sc_resource"
             extract_collection_ $sc_return
             split_ 'users' $sc_return
             if [[ $optparse_result[detailed] ]]; then
@@ -322,11 +330,11 @@ case $sc_resource in
   (t | tracks)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
-        typeset -a data=(${(s: :)line})
-        case $data[1] in
-          track_id) echo $line;;
-          user_id)
-            get_ "users/$data[2]/tracks"
+        eval "typeset -A data=(${line})"
+        case $data[type] in
+          track) echo $line;;
+          user)
+            get_ "users/$data[id]/tracks"
             split_ 'tracks' $sc_return
             if [[ $optparse_result[detailed] ]]; then
               output_ $sc_return 'desc/tracks'
