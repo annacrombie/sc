@@ -286,6 +286,22 @@ case $sc_resource in
     else
       die_ "no input"
     fi;;
+  (sort)
+    typeset -A sort_keys
+    case "$sc_trailing[1]" in
+      users)
+        sort_keys=(user_id 2 followers 4 username 6 last_modified 8)
+        ;;
+      tracks)
+        sort_keys=(track_id 2 stream_url 4 artist 6 title 8)
+        ;;
+      *) die_ "what do you want to sort by?"
+    esac
+
+    [[ -z $sort_keys[$sc_trailing[2]] ]] && die_ "invalid sort type"
+
+    cat - | sort --key=$sort_keys[$sc_trailing[2]]
+    ;;
   (d | describe)
     if [[ $sc_pipe ]]; then
       cat - | while read line; do
