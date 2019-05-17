@@ -25,11 +25,11 @@ def track_niced:
 ;
 
 def track_raw:
-  "track_id \(.id)"
+  "type track id \(.id)"
 ;
 
 def track_rawd:
-  "track_id \(.id) stream_url \(.stream_url | @sh) artist \(.user.username | @sh) title \(.title | @sh) ext mp3"
+  "type track id \(.id) stream_url \(.stream_url | @sh) artist \(.user.username | @sh) title \(.title | @sh) ext mp3"
 ;
 
 def user_nice:
@@ -56,9 +56,9 @@ def user_niced:
 ;
 
 def user_raw:
-  "user_id \(.id)"
+  "type user id \(.id)"
 ;
 
 def user_rawd:
-  "user_id \(.id) followers \(.followers_count) username \(.username | @sh) last_modified \(.last_modified|sctimestamp)"
+  "type user id \(.id) followers \(.followers_count) username \(.username | @sh) last_modified \(.last_modified|sctimestamp)"
 ;
