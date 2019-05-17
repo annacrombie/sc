@@ -262,8 +262,8 @@ case $sc_resource in
     line="$(head -n 1 "$tmp")"
     eval "typeset -A data=(${line})"
     case $data[type] in
-      user) sort_keys=(id 2 followers 4 username 6 last_modified 8);;
-      track) sort_keys=(id 2 stream_url 4 artist 6 title 8);;
+      user) sort_keys=(type 2 id 4 followers 6 username 8 last_modified 10);;
+      track) sort_keys=(type 2 id 4 plays 8 last_modified 10 dl 12 artist 14 title 16);;
     esac
 
     sort_col=$sort_keys[$sc_trailing[1]]
