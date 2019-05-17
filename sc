@@ -158,7 +158,8 @@ jq_() {
  typeset data="$2"
  typeset lim=${optparse_result[take]}
 
- jq -Mr -L"${sc_path}/jq" --arg limit "$lim" -f "$jq" "$data" || die_ "jq error in $jq"
+ jq -Mr -L"${sc_path}/jq" --arg limit "$lim" -f "$jq" "$data" || \
+   die_ "jq error in $jq"
 }
 
 output_() {
@@ -307,7 +308,11 @@ case $sc_resource in
             get_ "users/$data[2]/$sc_resource"
             extract_collection_ $sc_return
             split_ 'users' $sc_return
-            output_ $sc_return 'users'
+            if [[ $optparse_result[detailed] ]]; then
+              output_ $sc_return 'desc/users'
+            else
+              output_ $sc_return 'users'
+            fi
             ;;
         esac
       done
@@ -323,7 +328,11 @@ case $sc_resource in
           user_id)
             get_ "users/$data[2]/tracks"
             split_ 'tracks' $sc_return
-            output_ $sc_return 'tracks'
+            if [[ $optparse_result[detailed] ]]; then
+              output_ $sc_return 'desc/tracks'
+            else
+              output_ $sc_return 'tracks'
+            fi
             ;;
         esac
       done
