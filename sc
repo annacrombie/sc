@@ -271,7 +271,12 @@ case $sc_resource in
     [[ -z $sort_col ]] && \
       die_ "invalid sort column $sc_trailing[1] for $data[type]"
 
-    sort --key=$sort_col "$tmp"
+    sort ${sc_trailing[2,-1]} --key=$sort_col "$tmp" |
+      if [[ $optparse_result[take] ]]; then
+        head -n $optparse_result[take]
+      else
+        cat -
+      fi
 
     rm "$tmp"
     ;;
