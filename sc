@@ -186,7 +186,7 @@ filter_accept_() {
 
   [[ -z $data[$sc_filter[1]] ]] && die_ "invalid filter"
 
-  eval "[[ $data[$sc_filter[1]] $sc_filter[2] $sc_filter[3] ]]"
+  eval "[[ \"$data[$sc_filter[1]]\" $sc_filter[2] \"$sc_filter[3]\" ]]"
   return $?
 }
 
