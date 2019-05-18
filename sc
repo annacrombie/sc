@@ -218,7 +218,7 @@ case $sc_resource in
         unset sc_tty
       fi
 
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         case $data[type] in
           track)
@@ -245,7 +245,7 @@ case $sc_resource in
     typeset -ga sc_filter=(${sc_trailing[1,3]})
 
     if [[ $sc_pipe ]]; then
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         filter_accept_ ${(kv)data} && echo "$line"
       done
@@ -282,7 +282,7 @@ case $sc_resource in
     ;;
   (d | describe)
     if [[ $sc_pipe ]]; then
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         case $data[type] in
           user)
@@ -300,7 +300,7 @@ case $sc_resource in
     fi;;
   (u | users)
     if [[ $sc_pipe ]]; then
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         case $data[type] in
           user) echo "$line";;
@@ -312,7 +312,7 @@ case $sc_resource in
     fi;;
   (followings | followers)
     if [[ $sc_pipe ]]; then
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         case $data[type] in
           user)
@@ -332,7 +332,7 @@ case $sc_resource in
     fi;;
   (t | tracks)
     if [[ $sc_pipe ]]; then
-      while read line; do
+      while read -r line; do
         eval "typeset -A data=(${line})"
         case $data[type] in
           track) echo $line;;
