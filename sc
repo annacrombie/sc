@@ -5,7 +5,9 @@ typeset -g sc_path="${0:A:h}"
 source "${sc_path}/optparse.zsh"
 source "${sc_path}/strings.zsh"
 
-typeset -g sc_api="https://api.soundcloud.com"
+typeset -g sc_api_proto="https"
+typeset -g sc_api_base="api.soundcloud.com"
+typeset -g sc_api="$sc_api_proto://$sc_api_base"
 typeset -g sc_keys=()
 typeset -g sc_keyfile="keys"
 typeset -g sc_keyid=1
@@ -14,9 +16,11 @@ typeset -g sc_return
 
 typeset -gA sc_dirs
 sc_dirs=(
-  base   "./sc_data"
-  cache  "./sc_data/cache"
-  tracks "./sc_data/tracks"
+  base   "$sc_path/sc_data"
+  cache  "$sc_path/sc_data/cache"
+  api    "$sc_path/sc_data/cache/$sc_api_base"
+  tracks "$sc_path/sc_data/tracks"
+  jq     "$sc_path/jq"
 )
 
 typeset dir
@@ -30,7 +34,7 @@ die_() {
 }
 
 load_keys_() {
-  source "$sc_keyfile"
+  source "$sc_path/$sc_keyfile"
 }
 
 build_paramstr_() {
@@ -104,7 +108,7 @@ search_() {
 
 resolve_() {
   typeset pl="$1"; shift
-  typeset d="$sc_dirs[cache]/api.soundcloud.com/"
+  typeset d="$sc_dirs[api]"
   typeset f="$d/resolve/${pl}@"
   typeset rsv
 
@@ -113,10 +117,10 @@ resolve_() {
     return
   fi
 
-  get_api_url_ 'resolve' 'url' "https://soundcloud.com/$pl"
+  get_api_url_ 'resolve' 'url' "$sc_api_proto://soundcloud.com/$pl"
   rsv="$(wget -qSO- --spider --max-redirect=0 "$sc_return" 2>&1 | \
     grep Location | \
-    sed 's/.*Location: https:\/\/api.soundcloud.com\/\(.*\)?.*/\1/g')"
+    sed "s/.*Location: $sc_api_proto:\/\/$sc_api_base\/\(.*\)?.*/\1/g")"
 
   [[ -z "$rsv" ]] && die_ "failed to resolve $pl :("
 
@@ -134,9 +138,11 @@ split_() {
   typeset -a ids=($(jq -Mr '.[] | .id' $data))
   typeset i=0
 
+
   for id in $ids; do
-    [[ -f "${sc_dirs[cache]}/api.soundcloud.com/$ep/$id$" ]] && continue
-    jq -Mc ".[$i]" "$data" > "${sc_dirs[cache]}/api.soundcloud.com/$ep/$id$"
+    typeset file="${sc_dirs[api]}/$ep/$id$"
+    [[ -f $file ]] && continue
+    jq -Mc ".[$i]" "$data" > "$file"
     ((i+=1))
   done
 }
@@ -144,7 +150,7 @@ split_() {
 extract_collection_() {
   typeset data="$1"
 
-  is_coll=$(jq -Mrf "${sc_path}/jq/is_collection.jq" "$data")
+  is_coll=$(jq -Mrf "${sc_dirs[jq]}/is_collection.jq" "$data")
   [[ $is_coll = false ]] && return
 
   typeset f=$(mktemp)
@@ -165,7 +171,7 @@ jq_() {
 output_() {
   typeset data=$1
   if [[ $sc_tty ]]; then
-    typeset jq="${sc_path}/jq/disp/$2.jq"
+    typeset jq="${sc_dirs[jq]}/disp/$2.jq"
     typeset cols="$(head -n 1 "$jq")"
 
     jq_ "$jq" "$data" |
@@ -175,7 +181,7 @@ output_() {
         cat -
       fi
   else
-    typeset jq="${sc_path}/jq/raw/$2.jq"
+    typeset jq="${sc_dirs[jq]}/raw/$2.jq"
 
     jq_ "$jq" "$data"
   fi
@@ -240,7 +246,7 @@ case $sc_resource in
     else
       $sc_exec resolve $sc_trailing | $sc_exec tracks | $sc_exec fetch
     fi;;
-  (filter)
+  (F | filter)
     [[ $#sc_trailing != 3 ]] && die_ "filter must consist of 3 parts"
     typeset -ga sc_filter=(${sc_trailing[1,3]})
 
@@ -252,7 +258,7 @@ case $sc_resource in
     else
       die_ "no input"
     fi;;
-  (sort)
+  (s | sort)
     typeset -A sort_keys
     typeset sort_col
     typeset tmp=$(mktemp)
@@ -271,6 +277,7 @@ case $sc_resource in
     [[ -z $sort_col ]] && \
       die_ "invalid sort column $sc_trailing[1] for $data[type]"
 
+    echo sort ${sc_trailing[2,-1]} --key=$sort_col "$tmp"
     sort ${sc_trailing[2,-1]} --key=$sort_col "$tmp" |
       if [[ $optparse_result[take] ]]; then
         head -n $optparse_result[take]
@@ -278,7 +285,7 @@ case $sc_resource in
         cat -
       fi
 
-    rm "$tmp"
+    #rm "$tmp"
     ;;
   (d | describe)
     if [[ $sc_pipe ]]; then
@@ -354,8 +361,7 @@ case $sc_resource in
   (r | resolve)
     resolve_ $sc_trailing
     typeset -a resolved=(${(s: :)sc_return})
-    output_ "$sc_dirs[cache]/api.soundcloud.com/${(j:/:)resolved}" \
-      ${resolved[1]%%s}
+    output_ "$sc_dirs[api]/${(j:/:)resolved}" ${resolved[1]%%s}
     ;;
   (l | library)
     tree -C "$sc_dirs[tracks]"
