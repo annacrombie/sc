@@ -4,8 +4,18 @@ optparse_disp[info]='
 COMMANDS
   d, describe   - describe input object(s), or re-run after resolve Q
   f, fetch    Q - download input object(s), or re-run after resolve Q | tracks
+  F, filter FIELD COMPARISON VALUE
+                - filter results by FIELD, using COMPARISON with VALUE.  E.g. to
+                  only output downloadable tracks, the following filter suffices
+
+                  sc filter downloadable = true
+  s, sort FIELD [ARGS]
+                - sort input by field, passing optional ARGS to the underlying
+                  call of sort(1)
   t, tracks   Q - get tracks from input, or query Q
   u, users    Q - get users from input, or query Q
+     followings - get followings of users
+     followers  - get followers of users
   p, play       - play input files with mpv(1)
   r, resolve  Q - resolve Q to an object
   l, library    - display downloaded tracks
