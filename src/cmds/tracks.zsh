@@ -18,6 +18,7 @@ cmd_tracks_() {
   if [[ ! $sc_pipe ]]; then
     search_ 'tracks' $sc_trailing
     split_ 'tracks' $sc_return
+    return
   fi
 
   if [[ $sc_tty ]]; then
@@ -30,4 +31,5 @@ cmd_tracks_() {
 
   typeset -g sc_tty=$osc_tty
   output_ "$tmpf" 'tracks'
+  rm "$tmpf"
 }

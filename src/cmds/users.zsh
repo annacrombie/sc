@@ -24,14 +24,13 @@ cmd_users_() {
   if [[ ! $sc_pipe ]]; then
     search_ 'users' $sc_trailing
     split_ 'users' $sc_return
+    return
   fi
 
   if [[ $sc_tty ]]; then
     typeset osc_tty="$sc_tty"
     unset sc_tty
   fi
-
-  # jq_ s '. | sc::tfilter("user") | sc::dstream' - dlvl desc
 
   typeset -ga encountered_users=()
 

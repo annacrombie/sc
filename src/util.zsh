@@ -10,11 +10,14 @@ die_() {
 jq_() {
   typeset -a args=(--monochrome-output)
   typeset nofile
+  typeset debug;
 
   while [[ -n "$@" ]]; do
     case "$1" in
       c) args=(--monochrome-output --compact-output);;
       r) args=(--monochrome-output --raw-output);;
+      slurp) args+="--slurp";;
+      debug) debug=true;;
       s) nofile=true;;
       *) break;;
     esac; shift
@@ -59,7 +62,7 @@ jq_() {
 
   args+="$data"
 
-  echo jq $args >&2
+  [[ $debug ]] && echo jq $args >&2
   jq $args || die_ "jq error in $jq"
 }
 

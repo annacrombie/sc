@@ -13,6 +13,7 @@ sc_cli_main_() {
     r cmd_resolve_  resolve    cmd_resolve_
     l cmd_library_  library    cmd_library_
     p cmd_play_     play       cmd_play_
+    c cmd_count_    count      cmd_count_
   )
 
   cmd=$cmds[$sc_opt[cmd]]

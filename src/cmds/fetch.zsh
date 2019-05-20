@@ -1,32 +1,34 @@
-cmd_fetch() {
+cb_track_() {
+  typeset -A track=($@)
+
+  typeset outd="${sc_dirs[tracks]}/${data[artist]//\//%}"
+  typeset outf="${outd}/${data[title]//\//%}.${data[ext]}"
+
+  mkdir -p "$outd"
+
+  build_url_ "${data[stream_url]}"
+
+  [[ $sc_tty ]] && echo "fetching $data[artist] - $data[title]"
+
+  wcache $progress -l \
+    --cache="$sc_dirs[cache]" \
+    --best-by=inf \
+    --output="$outf" \
+    "$returned" || die_ "failed to get file"
+
+  [[ ! $sc_tty ]] && echo "file://${outf:a}"
+
+  return
+}
+
+cmd_fetch_() {
   if [[ ! $sc_pipe ]]; then
     $sc_exec resolve $sc_trailing | $sc_exec tracks | $sc_exec fetch
+    return
   fi
 
-  typeset prog=""
-  typeset otty
-  if [[ $sc_tty ]]; then
-    prog="--bar"
-    otty=true
-    unset sc_tty
-  fi
+  typeset -g progressj=""
+  [[ $sc_tty ]] && progress="--bar"
 
-  jq_ s '. | sc::tfilter("track") | sc::obj_to_zsh' - | while read -r line; do
-    eval "typeset -A data=(${line})"
-    [[ (-z $data[title] || -z $data[artist] || -z $data[ext] || \
-      -z $data[stream_url]) ]] && die_ "invalid track data"
-
-    typeset outd="${sc_dirs[tracks]}/${data[artist]//\//%}"
-    typeset outf="${outd}/${data[title]//\//%}.${data[ext]}"
-    mkdir -p "$outd"
-
-    build_url_ "${data[stream_url]}"
-
-    [[ $otty ]] && echo "fetching $data[artist] - $data[title]"
-
-    wcache "$prog" -l -c "$sc_dirs[cache]" -b inf -O "$outf" \
-      "$returned" || die_ "failed to get file"
-
-    [[ ! $otty ]] && echo "file://${outf:a}"
-  done
+  eval_loop_ track cb_track_
 }

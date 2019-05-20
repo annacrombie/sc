@@ -66,6 +66,7 @@ extract_collection_() {
 
 output_() {
   typeset data=$1
+  typeset args=("$data" limit $sc_opt[take])
 
   if [[ $sc_tty ]]; then
     typeset f="disp/$2.jq"
@@ -73,7 +74,7 @@ output_() {
     typeset cols="$(head -n 1 "$jq/$f")"
     cols="${cols##\#}"
 
-    jq_ r "$f" "$data" limit $sc_opt[take] |
+    jq_ r "$f" $args |
       if [[ -n $cols ]]; then
         column -s '|' -t -N "$cols"
       else
@@ -81,7 +82,7 @@ output_() {
       fi
   else
     typeset f="raw/desc/$2.jq"
-    jq_ c "$f" "$data" limit $sc_opt[take]
+    jq_ debug c "$f" $args
   fi
 }
 
