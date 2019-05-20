@@ -1,6 +1,4 @@
 sc_cli_main_() {
-  sc_parse_opts_ $@
-
   typeset -A cmds=(
     f cmd_fetch_    fetch      cmd_fetch_
     F cmd_filter_   filter     cmd_filter_
@@ -15,6 +13,8 @@ sc_cli_main_() {
     p cmd_play_     play       cmd_play_
     c cmd_count_    count      cmd_count_
   )
+
+  sc_parse_opts_ $@
 
   cmd=$cmds[$sc_opt[cmd]]
   [[ -z $cmd ]] && die_ "invalid command $cmd"
