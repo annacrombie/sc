@@ -37,33 +37,6 @@ resolve_() {
   return_ "$rsv$"
 }
 
-split_() {
-  typeset ep=$1
-  typeset data=$2
-  typeset -a ids=($(jq -Mr '.[] | .id' $data))
-  typeset i=0
-
-
-  for id in $ids; do
-    typeset file="${sc_dirs[api]}/$ep/$id$"
-    [[ -f $file ]] && continue
-    jq -Mc ".[$i]" "$data" > "$file"
-    ((i+=1))
-  done
-}
-
-extract_collection_() {
-  typeset data="$1"
-
-  is_coll=$(jq -Mrf "${sc_dirs[jq]}/is_collection.jq" "$data")
-  [[ $is_coll = false ]] && return
-
-  typeset f=$(mktemp)
-
-  jq -Mc ".collection" "$data" > "$f"
-  mv "$f" "$data"
-}
-
 output_() {
   typeset data=$1
   typeset args=("$data" limit $sc_opt[take])
@@ -82,34 +55,8 @@ output_() {
       fi
   else
     typeset f="raw/desc/$2.jq"
-    jq_ debug c "$f" $args
+    jq_ c "$f" $args
   fi
-}
-
-to_json_() {
-  typeset -A obj=($@)
-  typeset tmp k v
-  typeset -a out=()
-  for k v in ${(kv)obj}; do
-    if [[ $v = <-> ]]; then
-      printf -v tmp '"%s":%s' $k $v
-    else
-      printf -v tmp '"%s":"%s"' $k $v
-    fi
-
-    out+="$tmp"
-  done
-
-  echo "{${(j:,:)out}}"
-}
-
-filter_accept_() {
-  typeset -A data=($@)
-
-  [[ -z $data[$sc_filter[1]] ]] && die_ "invalid filter"
-
-  eval "[[ \"$data[$sc_filter[1]]\" $sc_filter[2] \"$sc_filter[3]\" ]]"
-  return $?
 }
 
 eval_loop_() {

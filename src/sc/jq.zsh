@@ -1,12 +1,3 @@
-return_() {
-  typeset -g returned="$@"
-}
-
-die_() {
-  echo "$@" >&2
-  exit 1
-}
-
 jq_() {
   typeset -a args=(--monochrome-output)
   typeset nofile
@@ -23,7 +14,7 @@ jq_() {
     esac; shift
   done
 
-  args=($args -L"${sc_path}/jq")
+  args=($args -L"${sc_dirs[jq]}")
 
   #typeset lim=${sc_limit}
   if [[ $nofile ]]; then
@@ -64,12 +55,4 @@ jq_() {
 
   [[ $debug ]] && echo jq $args >&2
   jq $args || die_ "jq error in $jq"
-}
-
-intialize_dirs_() {
-  typeset dir
-
-  for dir in $@; do
-    mkdir -p "$dir"
-  done
 }

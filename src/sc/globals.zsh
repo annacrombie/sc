@@ -9,7 +9,7 @@ typeset -gA sc_dirs=(
   cache  "$sc_path/sc_data/cache"
   api    "$sc_path/sc_data/cache/$sc_api_base"
   tracks "$sc_path/sc_data/tracks"
-  jq     "$sc_path/jq"
+  jq     "$sc_path/src/jq"
 )
 
 [[ -t 1 ]] && typeset -g sc_tty=true

@@ -19,6 +19,6 @@ sc_cli_main_() {
   cmd=$cmds[$sc_opt[cmd]]
   [[ -z $cmd ]] && die_ "invalid command $cmd"
 
-  source "$sc_path/src/cmds/${${cmd%%_}##cmd_}.zsh"
+  source "$sc_path/src/sc/cmds/${${cmd%%_}##cmd_}.zsh"
   $cmd || die_ "failed to execute $cmd"
 }

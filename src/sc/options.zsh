@@ -1,9 +1,8 @@
 sc_parse_opts_() {
   typeset -gA opts=(
     take=    "set the limit on results"
-    detailed "produce more detailed info"
   )
-  typeset -gA optalias=(t take= d detailed)
+  typeset -gA optalias=(t take=)
 
   optparse_parse_ opts optalias $@
 
