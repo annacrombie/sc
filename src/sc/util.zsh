@@ -91,7 +91,7 @@ is_fresh_() {
   typeset file=$1
   typeset tgt=$2
   typeset stats age
-  zstat -H stats "$file"
+  zstat -L -H stats "$file"
   age=$((EPOCHSECONDS - stats[mtime]))
 
   log_debug_ "checking $file (${age}s old), best-by $tgt"
