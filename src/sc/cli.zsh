@@ -12,6 +12,7 @@ sc_cli_main_() {
     l cmd_library_  library    cmd_library_
     p cmd_play_     play       cmd_play_
     c cmd_count_    count      cmd_count_
+                    prune      cmd_prune_
   )
 
   sc_parse_opts_ $@
