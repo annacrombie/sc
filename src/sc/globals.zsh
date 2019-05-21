@@ -2,6 +2,12 @@ typeset -g sc_api_proto="https"
 typeset -g sc_api_base="api.soundcloud.com"
 typeset -g sc_api="$sc_api_proto://$sc_api_base"
 typeset -g sc_key=""
+typeset -g sc_verbosity=0
+typeset -gA sc_expiration=(
+  cache   3600
+  resolve 86400
+  tracks  inf
+)
 typeset -gA sc_dirs=(
   base   "$sc_path/data"
   cache  "$sc_path/data/cache"

@@ -2,8 +2,20 @@ return_() {
   typeset -g returned="$@"
 }
 
+log_() {
+  echo "[sc log] $@"
+}
+
+log_debug_() {
+  [[ $sc_verbosity -gt 1 ]] && log_ "[debug] $@" >&2
+}
+
+log_err_() {
+  log_ "[error] $@" >&2
+}
+
 die_() {
-  echo "$@" >&2
+  log_err_ "$@"
   cleanup_
   exit 1
 }
