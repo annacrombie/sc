@@ -4,7 +4,14 @@ return_() {
 
 die_() {
   echo "$@" >&2
+  cleanup_
   exit 1
+}
+
+cleanup_() {
+  for dir in $sc_tmpfiles; do
+    [[ -f $dir ]] && rm "$dir"
+  done
 }
 
 intialize_dirs_() {
