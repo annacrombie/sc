@@ -35,7 +35,8 @@ extract_collection_() {
   is_coll=$(jq -Mrf "${sc_dirs[jq]}/is_collection.jq" "$data")
   [[ $is_coll = false ]] && return
 
-  typeset f=$(mktemp)
+  mktmp_
+  typeset f="$returned"
 
   jq -Mc ".collection" "$data" > "$f"
   mv "$f" "$data"
@@ -57,4 +58,11 @@ to_json_() {
   done
 
   echo "{${(j:,:)out}}"
+}
+
+mktmp_() {
+  typeset tmpf=$(mktemp --tmpdir=/tmp sctmp_XXXXXXXX)
+  sc_tmpfiles+="$tmpf"
+
+  return_ "$tmpf"
 }

@@ -26,10 +26,10 @@ cmd_tracks_() {
     unset sc_tty
   fi
 
-  typeset tmpf=$(mktemp)
-  eval_loop_ user cb_user_ track cb_track_ > $tmpf
+  mktmp_
+  typeset tmp="$returned"
+  eval_loop_ user cb_user_ track cb_track_ > $tmp
 
   typeset -g sc_tty=$osc_tty
-  output_ "$tmpf" 'tracks'
-  rm "$tmpf"
+  output_ "$tmp" 'tracks'
 }

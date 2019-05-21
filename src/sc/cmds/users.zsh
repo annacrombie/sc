@@ -34,10 +34,11 @@ cmd_users_() {
 
   typeset -ga encountered_users=()
 
-  typeset tmpf=$(mktemp)
-  eval_loop_ user cb_user_ track cb_track_ > $tmpf
+  mktmp_
+  typeset tmp="$returned"
+
+  eval_loop_ user cb_user_ track cb_track_ > $tmp
 
   typeset -g sc_tty=$osc_tty
-  output_ "$tmpf" 'users'
-  rm "$tmpf"
+  output_ "$tmp" 'users'
 }

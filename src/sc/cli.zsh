@@ -20,5 +20,9 @@ sc_cli_main_() {
   [[ -z $cmd ]] && die_ "invalid command $cmd"
 
   source "$sc_path/src/sc/cmds/${${cmd%%_}##cmd_}.zsh"
-  $cmd || die_ "failed to execute $cmd"
+  $cmd
+
+  for dir in $sc_tmpfiles; do
+    [[ -f $dir ]] && rm "$dir"
+  done
 }

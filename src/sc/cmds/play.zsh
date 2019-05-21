@@ -7,9 +7,9 @@ cmd_play_() {
     return
   fi
 
-  typeset plst=$(mktemp)
+  mktmp_
+  typeset plst="$returned"
   > "$plst"
   exec < /dev/tty
   mpv --playlist="$plst"
-  rm "$plst"
 }

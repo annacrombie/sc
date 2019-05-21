@@ -11,6 +11,7 @@ typeset -gA sc_dirs=(
   tracks "$sc_path/sc_data/tracks"
   jq     "$sc_path/src/jq"
 )
+typeset -ga sc_tmpfiles=()
 
 [[ -t 1 ]] && typeset -g sc_tty=true
 [[ -t 0 ]] || typeset -g sc_pipe=true
