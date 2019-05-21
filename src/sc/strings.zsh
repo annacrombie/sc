@@ -10,8 +10,8 @@ COMMANDS
   F, filter EXP               - filter input using jq
   l, library                  - display your libarary
   p, play                     - play input files
+     prune [links|stale]      - remove files from the cache
   r, resolve PERMALINK        - resolve soundcloud permalink
   s, sort FIELD [asc|desc]    - sort input objects
   t, tracks                   - get tracks from input
-  u, users                    - get users from input
-'
+  u, users                    - get users from input'
