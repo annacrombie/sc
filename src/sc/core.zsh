@@ -41,7 +41,7 @@ resolve_() {
 
   mkdir -p "${f:h}"
 
-  ln -sr "$d/$rsv$" "$f"
+  ln -fsr "$d/$rsv$" "$f"
   get_ "$rsv"
   typeset -a rsv=(${(s:/:)rsv})
   return_ "$rsv$"
