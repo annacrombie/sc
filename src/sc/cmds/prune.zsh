@@ -3,13 +3,13 @@ cmd_prune_() {
     stale)
       # stale files
       find "$sc_dirs[cache]" -type f -not -mmin $((sc_expiration[cache]/60)) \
-        -exec echo '{}' +
+        -exec rm '{}' +
       find "$sc_dirs[cache]" -type l -not -mmin $((sc_expiration[resolve]/60)) \
-        -exec echo '{}' +
+        -exec rm '{}' +
       ;;
     links | broken)
       # invalid links
-      find -L "$sc_dirs[base]" -type l -exec echo '{}' +
+      find -L "$sc_dirs[base]" -type l -exec rm '{}' +
       ;;
     *) die_ "what to prune?"
   esac
