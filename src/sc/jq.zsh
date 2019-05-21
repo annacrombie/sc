@@ -54,5 +54,5 @@ jq_() {
   args+="$data"
 
   [[ $debug ]] && echo jq $args >&2
-  jq $args || die_ "jq error in $jq"
+  jq $args || die_ "jq error in $jq\nwhile parsing $data"
 }
