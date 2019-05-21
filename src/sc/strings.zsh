@@ -1,7 +1,8 @@
-optparse_disp[banner]='Usage: sc [OPTIONS] COMMAND [QUERY]'
+optparse_disp[banner]="sc version $sc_version
+Usage: sc [OPTIONS] COMMAND [OPTIONS]"
 optparse_disp[desc]="A lightweight soundcloud client, conforming to unix philosophy."
 optparse_disp[info]='
-COMMANDS
+COMMANDS:
   c, count                    - count input objects
   d, describe                 - describe input objects
   f, fetch                    - download input tracks

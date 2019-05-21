@@ -1,3 +1,4 @@
+typeset -g sc_version="0.1.0"
 typeset -g sc_api_proto="https"
 typeset -g sc_api_base="api.soundcloud.com"
 typeset -g sc_api="$sc_api_proto://$sc_api_base"

@@ -2,12 +2,18 @@ sc_parse_opts_() {
   typeset -gA opts=(
     take=    "set the limit on results"
     verbose  "enable verbose output"
+    version  "show the version"
   )
-  typeset -gA optalias=(t take= V verbose)
+  typeset -gA optalias=(t take= V verbose v version)
 
   optparse_parse_ opts optalias $@
 
   typeset -gA sc_opt=(${(kv)optparse_result})
+
+  if [[ $sc_opt[version] ]]; then
+    echo "sc version $sc_version"
+    exit
+  fi
 
   typeset -ga sc_exec=($sc_exec)
   [[ $sc_opt[take] ]] && sc_exec+="--take=$sc_opt[take]"
