@@ -38,8 +38,8 @@ track  7:00 AM    Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 ```
 $ sc_prefix=~/.local/share
 $ mkdir -p $sc_prefix
-$ git clone <repo> $sc_prefix/sc && cd $sc_prefix/sc
-$ sudo make install
+$ git clone --recurse-submodules <repo> $sc_prefix/sc
+$ sudo make -C $sc_prefix/sc install
 ```
 
 ### `~/.config/sc/config.zsh`
