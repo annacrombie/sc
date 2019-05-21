@@ -1,29 +1,37 @@
 sc_cli_main_() {
-  typeset -A cmds=(
-    f cmd_fetch_    fetch      cmd_fetch_
-    F cmd_filter_   filter     cmd_filter_
-    s cmd_sort_     sort       cmd_sort_
-    d cmd_describe_ describe   cmd_describe_
-    u cmd_users_    users      cmd_users_
-                    followings cmd_followings_
-                    followers  cmd_followers_
-    t cmd_tracks_   tracks     cmd_tracks_
-    r cmd_resolve_  resolve    cmd_resolve_
-    l cmd_library_  library    cmd_library_
-    p cmd_play_     play       cmd_play_
-    c cmd_count_    count      cmd_count_
-                    prune      cmd_prune_
+  typeset cmd_dir="$sc_path/src/sc/cmds"
+
+  typeset -A cmd_alias=(
+    f fetch
+    F filter
+    s sort
+    d describe
+    u users
+#     followings
+#     followers
+    t tracks
+    r resolve
+    l library
+    p play
+    c count
+#     prune
   )
 
   sc_parse_opts_ $@
 
-  cmd=$cmds[$sc_opt[cmd]]
-  [[ -z $cmd ]] && die_ "invalid command $cmd"
+  [[ "$cmd_alias[${sc_opt[cmd]}]" ]] && sc_opt[cmd]="$cmd_alias[${sc_opt[cmd]}]"
+
+  typeset func="cmd_${sc_opt[cmd]}_"
+
+  if [[ ! -f "$cmd_dir/${sc_opt[cmd]}.zsh" ]]; then
+    die_ "invalid command \"$sc_opt[cmd]\""
+  fi
+
+  . "$cmd_dir/${sc_opt[cmd]}.zsh"
 
   load_config_
   initialize_dirs_ ${sc_dirs}
-  source "$sc_path/src/sc/cmds/${${cmd%%_}##cmd_}.zsh"
-  $cmd
+  $func
 
   cleanup_
 }
