@@ -23,7 +23,7 @@ cb_user_() {
 cmd_users_() {
   if [[ ! $sc_pipe ]]; then
     search_ 'users' $sc_trailing
-    split_ 'users' $sc_return
+    split_ 'users' $returned
     return
   fi
 
