@@ -12,7 +12,7 @@ cb_track_() {
 
   wcache $progress -l \
     --cache="$sc_dirs[cache]" \
-    --best-by=inf \
+    --best-by="$sc_expiration[tracks]" \
     --output="$outf" \
     "$returned" || die_ "failed to get file"
 
