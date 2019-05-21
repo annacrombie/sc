@@ -1,6 +1,6 @@
 #type,name,desc
 import "sc_common" as sc;
-[.] | flatten | unique | sc::lim | [.[] |
+[.] | flatten | sc::lim | [.[] |
   sc::switch(
     ["user", .username, .desc];
     ["track", .title,   .desc];
