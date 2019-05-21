@@ -20,8 +20,8 @@ sc_cli_main_() {
   cmd=$cmds[$sc_opt[cmd]]
   [[ -z $cmd ]] && die_ "invalid command $cmd"
 
-  initialize_dirs_ ${sc_dirs}
   load_config_
+  initialize_dirs_ ${sc_dirs}
   source "$sc_path/src/sc/cmds/${${cmd%%_}##cmd_}.zsh"
   $cmd
 
