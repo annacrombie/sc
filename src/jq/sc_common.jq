@@ -93,7 +93,7 @@ def clean:
 ;
 
 def track_nice:
-  . | clean | [ .title, .permalink ] | join("|")
+  . | clean | [ .title, (.plays | tostring), .permalink ] | join("|")
 ;
 
 def track_niced:
