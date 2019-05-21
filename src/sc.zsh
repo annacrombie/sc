@@ -1,6 +1,9 @@
 emulate -R zsh
 setopt localloops localtraps localpatterns functionargzero
 
+zmodload zsh/datetime
+zmodload zsh/stat
+
 source "${sc_path}/optparse.zsh"
 
 source "${sc_path}/src/sc/cli.zsh"

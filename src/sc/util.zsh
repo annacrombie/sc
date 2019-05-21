@@ -42,7 +42,8 @@ split_() {
 
   for id in $ids; do
     typeset file="${sc_dirs[api]}/$ep/$id$"
-    [[ -f $file ]] && continue
+    [[ -f $file ]] && is_fresh_ "$file" "$sc_expiration[cache]" && continue
+
     jq -Mc ".[$i]" "$data" > "$file"
     ((i+=1))
   done
@@ -84,4 +85,17 @@ mktmp_() {
   sc_tmpfiles+="$tmpf"
 
   return_ "$tmpf"
+}
+
+is_fresh_() {
+  typeset file=$1
+  typeset tgt=$2
+  typeset stats age
+  zstat -H stats "$file"
+  age=$((EPOCHSECONDS - stats[mtime]))
+
+  log_debug_ "checking $file (${age}s old), best-by $tgt"
+  [[ ($tgt == inf || $age -le $tgt) ]] && log_debug_ "its fresh!"
+
+  [[ ($tgt == inf || $age -le $tgt) ]]
 }

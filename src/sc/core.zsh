@@ -16,8 +16,10 @@ resolve_() {
   typeset rsv
 
   if [[ -L "$f" ]]; then
-    returned="${${(s:/:)f:A}[-2,-1]}"
-    return
+    if is_fresh_ "$f" "$sc_expiration[resolve]"; then
+      returned="${${(s:/:)f:A}[-2,-1]}"
+      return
+    fi
   fi
 
   get_api_url_ 'resolve' 'url' "$sc_api_proto://soundcloud.com/$pl"
@@ -27,7 +29,15 @@ resolve_() {
     grep Location | \
     sed "s/.*Location: $sc_api_proto:\/\/$sc_api_base\/\(.*\)?.*/\1/g")"
 
-  [[ -z "$rsv" ]] && die_ "failed to resolve $pl :("
+  if [[ -z "$rsv" ]]; then
+    if [[ $sc_expiration[resolve] != inf ]]; then
+      sc_expiration[resolve]=inf
+      resolve_ "$pl"
+      return
+    else
+      die_ "failed to resolve $pl :("
+    fi
+  fi
 
   mkdir -p "${f:h}"
 

@@ -56,7 +56,8 @@ get_() {
   [[ -n "$key" ]] && key="--key=${key}"
   [[ $force ]] && force="--best-by=0"
 
-  ret="$(wcache --cache=$sc_dirs[cache] $force $key --echo-output "${url}")"
+  ret="$(wcache --best-by=${sc_expiration[cache]} --cache=$sc_dirs[cache] \
+    $force $key --echo-output "${url}")"
 
   [[ -z "$ret" ]] && die_ "failed to get anything"
 
