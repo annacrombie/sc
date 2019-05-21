@@ -36,15 +36,16 @@ track  7:00 AM    Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 + zsh 5.6.2 (i686-pc-linux-gnu)
 
 ```
-$ SC_PREFIX=~/.local/share
-$ mkdir -p $SC_PREFIX
-$ git clone <repo> $SC_PREFIX/sc && cd $SC_PREFIX/sc
+$ sc_prefix=~/.local/share
+$ mkdir -p $sc_prefix
+$ git clone <repo> $sc_prefix/sc && cd $sc_prefix/sc
 $ sudo make install
 ```
 
 ### `~/.config/sc/config.zsh`
+
 ```zsh
-export SOUNDCLOUD_CLIENT_ID=<your client id>
+export SOUNDCLOUD_CLIENT_ID="<your client id>"
 ```
 
 # Usage

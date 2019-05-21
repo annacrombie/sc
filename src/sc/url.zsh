@@ -20,9 +20,8 @@ build_url_() {
   typeset base="$1"; shift
   typeset -A params=($@)
 
-  load_keys_
-  params[client_id]="$sc_keys[$sc_keyid]"
-  build_paramstr_ ${(kv)params}
+  [[ -z "$sc_key" ]] && die_ "please set \$SOUNDCLOUD_CLIENT_ID"
+  params[client_id]="$sc_key"
 
   build_paramstr_ ${(kv)params}
 
