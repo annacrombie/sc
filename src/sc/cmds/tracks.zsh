@@ -17,7 +17,7 @@ cb_user_() {
 cmd_tracks_() {
   if [[ ! $sc_pipe ]]; then
     search_ 'tracks' $sc_trailing
-    split_ 'tracks' $sc_return
+    split_ 'tracks' $returned
     return
   fi
 
