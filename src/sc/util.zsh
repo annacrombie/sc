@@ -14,7 +14,7 @@ cleanup_() {
   done
 }
 
-intialize_dirs_() {
+initialize_dirs_() {
   typeset dir
 
   for dir in $@; do
