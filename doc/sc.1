@@ -1,43 +1,75 @@
-  d, describe   - describe input object(s), or re-run after resolve Q
-  f, fetch    Q - download input object(s), or re-run after resolve Q | tracks
-  F, filter FIELD COMPARISON VALUE
-                - filter results by FIELD, using COMPARISON with VALUE.  E.g. to
-                  only output downloadable tracks, the following filter suffices
+.TH SC 1
+.SH NAME
+sc \- A lightweight soundcloud client, conforming to unix philosophy.
+.SH SYNOPSIS
+.B sc \fR[--version] [--help] [--verbose] [--take=<value>] <command> [<args>]
 
-                  sc filter downloadable = true
-  s, sort FIELD [ARGS]
-                - sort input by field, passing optional ARGS to the underlying
-                  call of sort(1)
-  t, tracks   Q - get tracks from input, or query Q
-  u, users    Q - get users from input, or query Q
-     followings - get followings of users
-     followers  - get followers of users
-  p, play       - play input files with mpv(1)
-  r, resolve  Q - resolve Q to an object
-  l, library    - display downloaded tracks
+.SH COMMANDS
 
-OBJECTS
-  Many sc commands take input as objects and/or output objects.  An object is
-  either a track, user, or playlist.  This allows sc commands to be chained
-  like so:
+.PP
+.TP
+.BR c ", " count
+count input objects
+.TP
+.BR d ", " describe
+describe input object(s)
+.TP
+.BR f ", " fetch
+download input object(s)
+.TP
+.BR followers
+get followers of users
+.TP
+.BR followings
+get followings of users
+.TP
+.BR F ", " filter " " EXP
+filter results using a \fBjq\fR(1) expression.
+.TP
+.BR l ", " library
+display downloaded tracks using \fBtree\fR(1)
+.TP
+.BR p ", " play
+play input files with \fBmpv\fR(1)
+.TP
+.BR prune " [" stale | links "]"
+prune old files
+.TP
+.BR r ", " resolve " " PERMALINK
+resolve PERMALINK to an object
+.TP
+.BR s ", " sort " " FIELD "  [" asc "|" desc "]"
+sort input by field (see \fBjq\fR(1) \fBsort_by\fR)
+.TP
+.BR t ", " tracks
+get tracks from input
+.TP
+.BR u ", " users
+get users from input
 
-    sc resolve <artist> | sc --take=5 tracks  | sc fetch | sc play
+.SH OBJECTS
+Many sc commands take input as objects and/or output objects.  An object is
+either a track, user, or playlist.  This allows sc commands to be chained
+like so:
 
-  This will resolve the input string to an artist id, get a list of their tracks
-  (outputting only 5), fetch those tracks, and finally play the result.
+  sc resolve <artist> | sc --take=5 tracks  | sc fetch | sc play
 
-CACHE
-  sc internally uses wcache(1) which is a thin wrapper around wget(1) that
-  caches downloads for relatively long periods of time.  For this reason,
-  repeated sc querys will not touch the network.
+This will resolve the input string to an artist id, get a list of their tracks
+(outputting only 5), fetch those tracks, and finally play the result.
 
-  If I first run (getting the first track for an artist)
+.SH CACHE
 
-    sc -t 1 users tennyson | sc -t 1 tracks | sc describe
+\fIsc\fR internally uses \fBwcache\fR(1) which is a thin wrapper around
+\fBwget\fR(1) that caches downloads for relatively long periods of time.  For
+this reason, repeated sc querys will not touch the network.
 
-  And then run
+If I first run (getting the first track for an artist)
 
-    sc -t 1 users tennyson | sc -t 1 tracks | sc fetch
+  sc -t 1 users tennyson | sc -t 1 tracks | sc describe
 
-  Only the final pipe touches the network, since all necessarry metadata has
-  already been fetched.'
+And then run
+
+  sc -t 1 users tennyson | sc -t 1 tracks | sc fetch
+
+Only the final pipe touches the network, since all necessarry metadata has
+already been fetched.'
