@@ -22,7 +22,7 @@ Dommel Mossel - Marco Polo  2      earthlibraries/dommel-mossel-marco-polo'
                                              =    "$user/liquid-damage"
   "sc_ r $user | sc_ t | sc_ filter '.title[0:7] == \"Captain\"' | sc_ c"
                                              =    2
-  "sc resolve earthlibraries | sc followers | sc -t 2 filter '.plan != \"Pro\"' | sc --force-tty-out describe"
+  "sc_ resolve earthlibraries | sc_ followers | sc_ -t 2 filter '.plan != \"Pro\"' | sc_ --force-tty-out describe"
                                              = 'type: user, permalink: flusnoix_jemawa
   jemawa
   plan: Free / tracks: 8 / followers: 135
