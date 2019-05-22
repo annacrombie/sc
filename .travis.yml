@@ -6,5 +6,5 @@ before_install:
 script:
   - make
   - sudo make install
-  - sc env
+  - sc --config=test/cfg/offline.zsh env
   - make test
