@@ -12,7 +12,8 @@ cmd_env_() {
 
   echo "\nsc state\n"
 
-  unset sc_key # don't output secret key
+  [[ -n "$sc_key" ]] && sc_key=${sc_key//[[:alnum:]]/x}
+
   typeset -m 'sc_*' | sort
   typeset -m PWD
 }
