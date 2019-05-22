@@ -17,10 +17,10 @@ type: user, permalink: sister-sniffle
 
 ```sh
 $ sc r tennysonmusic | sc tracks | sc -t 3 sort plays desc
-type   name       desc
-track  All Yours  happily confused
-track  Cry Bird   First single off our upcoming EP, "Uh Oh!".
-track  7:00 AM    Tennyson on Yours Truly! yourstru.ly/stories/tennyson
+type   name        desc
+track  With You    7" vinyl order:
+track  Lay-by      hey. i hope this song reminds you to slow down. sometimes the dark can be beauti
+track  Like What?  Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 ```
 
 # Installation
