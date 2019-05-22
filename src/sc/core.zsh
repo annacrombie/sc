@@ -10,7 +10,14 @@ search_() {
 }
 
 resolve_() {
-  typeset pl="$1"; shift
+  typeset pl="$1"
+
+  if [[ -z "$pl" ]]; then
+    die_ "no arguments to resolve_"
+  else
+    shift
+  fi
+
   typeset d="$sc_dirs[api]"
   typeset f="$d/resolve/${pl}@"
   typeset rsv
