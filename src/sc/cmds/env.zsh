@@ -6,6 +6,7 @@ cmd_env_() {
   ln --version | head -n 1
   tree --version
   zsh --version
+  column --version
   echo "optparse master@$(cat "$sc_path"/deps/optparse/.git/refs/heads/master)"
   echo "wcache master@$(cat "$sc_path"/deps/wcache/.git/refs/heads/master)"
   echo "sc $sc_version master@$(cat "$sc_path"/.git/refs/heads/master)"

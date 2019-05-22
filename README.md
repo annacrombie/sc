@@ -33,6 +33,7 @@ track  7:00 AM    Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 + jq-1.5
 + tree v1.7.0 - only for the `library` command
 + zsh 5.6.2 (i686-pc-linux-gnu)
++ column
 
 ```
 $ sc_prefix=~/.local/share
