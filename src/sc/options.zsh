@@ -4,8 +4,9 @@ sc_parse_opts_() {
     verbose  "enable verbose output"
     version  "show the version"
     force    "always download new files"
+    cache=   "set the cache dir"
   )
-  typeset -gA optalias=(t take= V verbose v version f force)
+  typeset -gA optalias=(t take= V verbose v version f force c cache=)
 
   optparse_parse_ opts optalias $@
 
@@ -14,6 +15,13 @@ sc_parse_opts_() {
   if [[ $sc_opt[version] ]]; then
     echo "sc version $sc_version"
     exit
+  fi
+
+  if [[ $sc_opt[cache] ]]; then
+    sc_dirs[base]="$sc_opt[cache]"
+    sc_dirs[cache]="$sc_dirs[base]/data/cache"
+    sc_dirs[api]="$sc_dirs[base]/data/cache/$sc_api_base"
+    sc_dirs[tracks]="$sc_dirs[base]/data/tracks"
   fi
 
   typeset -ga sc_exec=($sc_exec)
