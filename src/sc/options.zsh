@@ -25,16 +25,21 @@ sc_parse_opts_() {
     exit
   fi
 
+  typeset -ga sc_exec=($sc_exec)
+
   if [[ $sc_opt[cache] ]]; then
     sc_dirs[base]="$sc_opt[cache]"
-    sc_dirs[cache]="$sc_dirs[base]/data/cache"
-    sc_dirs[api]="$sc_dirs[base]/data/cache/$sc_api_base"
-    sc_dirs[tracks]="$sc_dirs[base]/data/tracks"
+    sc_dirs[cache]="$sc_dirs[base]/cache"
+    sc_dirs[api]="$sc_dirs[base]/cache/$sc_api_base"
+    sc_dirs[tracks]="$sc_dirs[base]/tracks"
+    sc_exec+="--cache='$sc_opt[cache]'"
   fi
 
-  [[ $sc_opt[config] ]] && sc_cfg_file="$sc_opt[config]"
+  if [[ $sc_opt[config] ]]; then
+    sc_cfg_file="$sc_opt[config]"
+    sc_exec+="--config='$sc_opt[config]'"
+  fi
 
-  typeset -ga sc_exec=($sc_exec)
   [[ $sc_opt[take] ]] && sc_exec+="--take=$sc_opt[take]"
   sc_opt[take]=${sc_opt[take]:-"x"}
 
