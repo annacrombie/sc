@@ -58,7 +58,7 @@ extract_collection_() {
   mktmp_
   typeset f="$returned"
 
-  jq -Mc ".collection" "$data" > "$f"
+  jq_ c s ".collection" "$data" > "$f"
   mv "$f" "$data"
 }
 
