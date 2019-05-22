@@ -1,11 +1,12 @@
 cb_user_() {
   typeset -A user=($@)
 
-  get_ "users/$user[id]/followings"
-  extract_collection_ $returned
-  split_ 'users' $returned
+  get_ "users/$user[id]/followings" limit 200
+  typeset data="$returned"
 
-  output_ $returned 'users'
+  extract_collection_ "$data"
+  split_ 'users' "$data"
+  output_ "$data" 'users'
 }
 
 cmd_followings_() {

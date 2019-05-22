@@ -7,6 +7,7 @@ cb_track_() {
   mkdir -p "$outd"
 
   build_url_ "${data[stream_url]}"
+  typeset url="$returned"
 
   [[ $sc_tty ]] && echo "fetching $data[artist] - $data[title]"
 
@@ -14,7 +15,7 @@ cb_track_() {
     --cache="$sc_dirs[cache]" \
     --best-by="$sc_expiration[tracks]" \
     --output="$outf" \
-    "$returned" || die_ "failed to get file"
+    "$url" || die_ "failed to get file"
 
   [[ ! $sc_tty ]] && echo "file://${outf:a}"
 
