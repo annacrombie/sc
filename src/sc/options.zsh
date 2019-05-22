@@ -1,11 +1,13 @@
 sc_parse_opts_() {
   typeset -gA opts=(
-    take=    "set the limit on results"
-    verbose  "enable verbose output"
-    version  "show the version"
-    force    "always download new files"
-    cache=   "set the cache dir"
-    config=  "set the configuration file"
+    take=         "set the limit on results"
+    verbose       "enable verbose output"
+    version       "show the version"
+    force         "always download new files"
+    cache=        "set the cache dir"
+    config=       "set the configuration file"
+    force-tty-out "force sc to think it is outputting to a tty"
+    force-tty-in  "force sc to think it is reading from a tty"
   )
   typeset -gA optalias=(
     t take=
@@ -20,6 +22,9 @@ sc_parse_opts_() {
 
   typeset -gA sc_opt=(${(kv)optparse_result})
 
+  [[ $sc_opt[force-tty-out] ]] && sc_tty=true
+  [[ $sc_opt[force-tty-in] ]] && unset sc_pipe
+
   if [[ $sc_opt[version] ]]; then
     echo "sc version $sc_version"
     exit
@@ -32,12 +37,12 @@ sc_parse_opts_() {
     sc_dirs[cache]="$sc_dirs[base]/cache"
     sc_dirs[api]="$sc_dirs[base]/cache/$sc_api_base"
     sc_dirs[tracks]="$sc_dirs[base]/tracks"
-    sc_exec+="--cache='$sc_opt[cache]'"
+    sc_exec+="--cache=$sc_opt[cache]"
   fi
 
   if [[ $sc_opt[config] ]]; then
     sc_cfg_file="$sc_opt[config]"
-    sc_exec+="--config='$sc_opt[config]'"
+    sc_exec+="--config=$sc_opt[config]"
   fi
 
   [[ $sc_opt[take] ]] && sc_exec+="--take=$sc_opt[take]"
