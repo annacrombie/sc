@@ -54,10 +54,12 @@ get_() {
   typeset url="$returned"
 
   [[ -n "$key" ]] && key="--key=${key}"
-  [[ $force ]] && force="--best-by=0"
 
-  ret="$(wcache_ --best-by=${sc_expiration[cache]} --cache=$sc_dirs[cache] \
-    $force $key --echo-output "${url}")"
+  typeset bb="${sc_expiration[cache]}"
+  [[ ($force || $sc_opt[force]) ]] && bb="0"
+
+  ret="$(wcache_ --best-by=$bb --cache=$sc_dirs[cache] \
+    $key --echo-output "${url}")"
 
   [[ -z "$ret" ]] && die_ "failed to get anything"
 

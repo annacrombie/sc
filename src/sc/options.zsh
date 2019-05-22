@@ -3,8 +3,9 @@ sc_parse_opts_() {
     take=    "set the limit on results"
     verbose  "enable verbose output"
     version  "show the version"
+    force    "always download new files"
   )
-  typeset -gA optalias=(t take= V verbose v version)
+  typeset -gA optalias=(t take= V verbose v version f force)
 
   optparse_parse_ opts optalias $@
 
