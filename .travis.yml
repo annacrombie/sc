@@ -1,0 +1,9 @@
+dist: xenial
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y jq
+script:
+  - make
+  - sudo make install
+  - sc env
+  - make test
