@@ -40,6 +40,8 @@ split_() {
   typeset -a ids=($(jq -Mr '.[] | .id' $data))
   typeset i=0
 
+  mkdir -p "${sc_dirs[api]}/$ep"
+
   for id in $ids; do
     typeset file="${sc_dirs[api]}/$ep/$id$"
     [[ -f $file ]] && is_fresh_ "$file" "$sc_expiration[cache]" && continue
