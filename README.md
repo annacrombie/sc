@@ -5,7 +5,6 @@ A lightweight soundcloud client, conforming to unix philosophy.
 
 ```sh
 $ sc resolve earthlibraries | sc followers | sc -t 2 filter '.plan != "Pro"' | sc describe
-
 type: user, permalink: flusnoix_jemawa
   jemawa
   plan: Free / tracks: 8 / followers: 135

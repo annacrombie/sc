@@ -22,6 +22,20 @@ Dommel Mossel - Marco Polo  2      earthlibraries/dommel-mossel-marco-polo'
                                              =    "$user/liquid-damage"
   "sc_ r $user | sc_ t | sc_ filter '.title[0:7] == \"Captain\"' | sc_ c"
                                              =    2
+  "sc resolve earthlibraries | sc followers | sc -t 2 filter '.plan != \"Pro\"' | sc --force-tty-out describe"
+                                             = 'type: user, permalink: flusnoix_jemawa
+  jemawa
+  plan: Free / tracks: 8 / followers: 135
+  &gt;&gt;**^**&lt;&lt;
+type: user, permalink: sister-sniffle
+  Sister Sniffle
+  plan: Free / tracks: 24 / followers: 57
+  Indie Pop'
+  "sc_ r tennysonmusic | sc_ tracks | sc_ --force-tty-out -t 3 sort plays desc"
+                                            = 'type   name        desc
+track  With You    7" vinyl order:
+track  Lay-by      hey. i hope this song reminds you to slow down. sometimes the dark can be beauti
+track  Like What?  Tennyson on Yours Truly! yourstru.ly/stories/tennyson'
 )
 
 typeset test comp expected
