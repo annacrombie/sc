@@ -32,7 +32,6 @@ track  7:00 AM    Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 + GNU coreutils (mktemp...)
 + jq-1.5
 + tree v1.7.0 - only for the `library` command
-+ wcache
 + zsh 5.6.2 (i686-pc-linux-gnu)
 
 ```

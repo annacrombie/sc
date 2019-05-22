@@ -1,3 +1,6 @@
 [submodule "deps/optparse"]
 	path = deps/optparse
 	url = https://github.com/annacrombie/optparse
+[submodule "deps/wcache"]
+	path = deps/wcache
+	url = https://github.com/annacrombie/wcache

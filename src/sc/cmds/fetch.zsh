@@ -10,7 +10,7 @@ cb_track_() {
 
   [[ $sc_tty ]] && echo "fetching $data[artist] - $data[title]"
 
-  wcache $progress -l \
+  wcache_ $progress -l \
     --cache="$sc_dirs[cache]" \
     --best-by="$sc_expiration[tracks]" \
     --output="$outf" \
