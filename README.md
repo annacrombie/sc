@@ -27,13 +27,15 @@ track  Like What?  Tennyson on Yours Truly! yourstru.ly/stories/tennyson
 
 ## Requirements
 
-+ find (GNU findutils) 4.6.0 - only for the `prune` command
-+ git version 2.21.0
-+ GNU coreutils (mktemp...)
-+ jq-1.5
-+ tree v1.7.0 - only for the `library` command
-+ zsh 5.6.2 (i686-pc-linux-gnu)
++ GNU coreutils (mktemp, ln...)
 + column
++ jq-1.5
++ zsh 5.6.2 (i686-pc-linux-gnu)
++ find (GNU findutils) 4.6.0 - only for the `prune` command
++ tree v1.7.0 - only for the `library` command
+
+Also a soundcloud `CLIENT_ID` is required, you can get one by following [these
+instructions](https://github.com/Soundnode/soundnode-app#configuration).
 
 ```
 $ sc_prefix=~/.local/share
