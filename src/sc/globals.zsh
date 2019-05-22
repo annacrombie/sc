@@ -17,6 +17,7 @@ typeset -gA sc_dirs=(
   jq     "$sc_path/src/jq"
   config "$HOME/.config/sc"
 )
+typeset -g sc_cfg_file="$sc_dirs[config]/config.zsh"
 typeset -ga sc_tmpfiles=()
 
 [[ -t 1 ]] && typeset -g sc_tty=true

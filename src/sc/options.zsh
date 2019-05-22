@@ -5,8 +5,16 @@ sc_parse_opts_() {
     version  "show the version"
     force    "always download new files"
     cache=   "set the cache dir"
+    config=  "set the configuration file"
   )
-  typeset -gA optalias=(t take= V verbose v version f force c cache=)
+  typeset -gA optalias=(
+    t take=
+    V verbose
+    v version
+    f force
+    c cache=
+    C config=
+  )
 
   optparse_parse_ opts optalias $@
 
@@ -23,6 +31,8 @@ sc_parse_opts_() {
     sc_dirs[api]="$sc_dirs[base]/data/cache/$sc_api_base"
     sc_dirs[tracks]="$sc_dirs[base]/data/tracks"
   fi
+
+  [[ $sc_opt[config] ]] && sc_cfg_file="$sc_opt[config]"
 
   typeset -ga sc_exec=($sc_exec)
   [[ $sc_opt[take] ]] && sc_exec+="--take=$sc_opt[take]"
