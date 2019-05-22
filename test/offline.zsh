@@ -43,7 +43,7 @@ for test comp expected in $tests; do
   echo -n "$test "
 
   typeset res=$(eval "$test")
-  eval "[[ \"$res\" $comp \"$expected\" ]]"
+  eval "[[ \"${res//\"/\\\"/}\" $comp \"${expected//\"/\\\"/}\" ]]"
 
   if [[ $? -ne 0 ]]; then
     echo "\e[31mfailed\e[0m :("
