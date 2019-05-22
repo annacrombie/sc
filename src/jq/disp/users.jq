@@ -1,3 +1,4 @@
-#username,permalink,pro?,desc
+#col
 import "sc_common" as sc;
-[.] | flatten | sc::lim | [.[] | sc::user_nice] | join("\n")
+"username|permalink|pro?|desc\n" +
+([.] | flatten | sc::lim | [.[] | sc::user_nice] | join("\n"))

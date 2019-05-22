@@ -61,12 +61,14 @@ output_() {
   if [[ $sc_tty ]]; then
     typeset f="disp/$2.jq"
     typeset jq="${sc_dirs[jq]}"
+
+    # TODO don't do this anymore
     typeset cols="$(head -n 1 "$jq/$f")"
     cols="${cols##\#}"
 
     jq_ r "$f" $args |
       if [[ -n $cols ]]; then
-        column -s '|' -t -N "$cols"
+        column -s '|' -t
       else
         cat -
       fi

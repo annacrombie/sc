@@ -1,9 +1,10 @@
-#type,name,desc
+#col
 import "sc_common" as sc;
-[.] | flatten | sc::lim | [.[] |
+"type|name|desc\n" +
+([.] | flatten | sc::lim | [.[] |
   sc::switch(
     ["user", .username, .desc];
     ["track", .title,   .desc];
     ["plist", "", ""]
   ) | join("|")
-] | join("\n")
+] | join("\n"))

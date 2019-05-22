@@ -1,3 +1,4 @@
-#title,plays,permalink
+#col
 import "sc_common" as sc;
-[.] | flatten | sc::lim | [.[] | sc::track_nice] | join("\n")
+"title|plays|permalink\n" +
+([.] | flatten | sc::lim | [.[] | sc::track_nice] | join("\n"))

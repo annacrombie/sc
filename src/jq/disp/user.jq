@@ -1,3 +1,4 @@
-#username,permalink,pro?,desc
+#col
 import "sc_common" as sc;
-. | sc::user_nice
+"username|permalink|pro?|desc\n" +
+(. | sc::user_nice)

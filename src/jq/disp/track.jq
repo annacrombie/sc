@@ -1,3 +1,4 @@
-#title,permalink
+#col
 import "sc_common" as sc;
-.|sc::track_nice
+"title|permalink\n" +
+(.|sc::track_nice)
