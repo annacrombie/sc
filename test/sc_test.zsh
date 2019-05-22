@@ -1,35 +1,34 @@
-sc_offline_() {
-  sc --config="test/cfg/config.zsh" --cache="test/data" $@
+sc_() {
+  sc --config="test/cfg/offline.zsh" --cache="test/data" $@
 }
 
-typeset user=earthlibraries
-typeset res
-res="$(sc_offline_ resolve $user | jq -Mr '.followers')"
-[[ $res = 15 ]] || exit 1
+typeset -g user=earthlibraries
+typeset -a tests=(
+  "sc_ resolve $user | jq -Mr '.followers'"  =    15
+  "sc_ r $user | sc_ d | jq -Mr '.type'"     "=~" user
+  "sc_ r $user | sc_ t | sc_ c"              =    8
+  "sc_ r $user | sc_ followers | sc_ c"      =    13
+  "sc_ r $user | sc_ followings | sc_ c"     =    25
+  "sc_ r $user | sc_ t | sc_ u | sc_ t | sc_ u | jq -Mr '.permalink'"
+                                             =    "$user"
+  "sc_ r $user | sc_ t | sc_ -t 1 sort plays | jq -Mr '.permalink'"
+                                             =    "$user/liquid-damage"
+  "sc_ r $user | sc_ t | sc_ filter '.title[0:7] == \"Captain\"' | sc_ c"
+                                             =    2
+)
 
-res="$(sc_offline_ r $user | sc d | jq -Mr '.type')"
-[[ $res =~ "user" ]] || exit 1
+typeset test comp expected
+for test comp expected in $tests; do
+  echo -n "$test "
 
-res="$(sc_offline_ r $user | sc d | jq -Mr '.type')"
-[[ $res =~ "user" ]] || exit 1
+  typeset res=$(eval "$test")
+  eval "[[ \"$res\" $comp \"$expected\" ]]"
 
-res="$(sc_offline_ r $user | sc t | sc c)"
-[[ $res = 8 ]] || exit 1
-
-res="$(sc_offline_ r $user | sc followers | sc c)"
-[[ $res = 13 ]] || exit 1
-
-res="$(sc_offline_ r $user | sc followings | sc c)"
-[[ $res = 25 ]] || exit 1
-
-res="$(sc_offline_ r $user | sc t | sc u | sc t | sc u | jq -Mr '.permalink')"
-[[ $res = "$user" ]] || exit 1
-
-res="$(sc_offline_ r $user | sc t | sc -t 1 sort plays | jq -Mr '.permalink')"
-[[ $res = "$user/liquid-damage" ]] || exit 1
-
-res="$(sc_offline_ r $user | sc t | sc filter '.title[0:7] == "Captain"' | sc c)"
-[[ $res = 2 ]] || exit 1
-
-echo "all tests passed"
-exit 0
+  if [[ $? -ne 0 ]]; then
+    echo "\e[31mfailed\e[0m :("
+    echo "'$res' does not $comp '$expected'"
+    exit 1
+  else
+    echo "\e[32mpassed\e[0m"
+  fi
+done
