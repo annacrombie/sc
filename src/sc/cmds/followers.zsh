@@ -1,3 +1,4 @@
+#get followers of input users
 cb_user_() {
   typeset -A user=($@)
 

@@ -1,3 +1,4 @@
+#get followings of input users
 cb_user_() {
   typeset -A user=($@)
 

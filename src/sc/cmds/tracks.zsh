@@ -1,3 +1,4 @@
+#get tracks from input
 cb_track_() {
   typeset -A track=($@)
 

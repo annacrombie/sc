@@ -1,3 +1,4 @@
+#remove files from the cache
 prune_stale_() {
   if [[ $sc_expiration[cache] != inf ]]; then
     find "$sc_dirs[cache]" -type f -not -name 'stream$' \

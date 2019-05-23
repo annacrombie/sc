@@ -1,3 +1,4 @@
+#get users from input
 cb_track_() {
   typeset -A track=($@)
 

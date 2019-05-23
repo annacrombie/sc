@@ -1,3 +1,4 @@
+#filter input using jq
 cmd_filter_() {
   typeset filter=${sc_trailing[1]}
   mktmp_

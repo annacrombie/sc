@@ -1,3 +1,4 @@
+#sort input objects
 cmd_sort_() {
   typeset sort_col=${sc_trailing[1]:-id}
   typeset sort_dir=${sc_trailing[2]:-desc}

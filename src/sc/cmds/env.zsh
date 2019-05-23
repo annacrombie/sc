@@ -1,3 +1,4 @@
+#print sc's execution environment.
 cmd_env_() {
   typeset -a bins=(find jq mktemp ln tree zsh column)
   typeset bin

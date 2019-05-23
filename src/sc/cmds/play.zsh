@@ -1,3 +1,4 @@
+#play input files
 cmd_play_() {
   if [[ ! $sc_pipe ]]; then
     exec mpv "${sc_dirs[tracks]}/${sc_trailing}"
