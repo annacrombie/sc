@@ -1,4 +1,7 @@
-source .env
+if [[ -f .env ]]; then
+  cat .env
+  source .env
+fi
 
 typeset -g any_failed
 typeset -g failed
