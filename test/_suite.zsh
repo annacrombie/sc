@@ -1,6 +1,5 @@
-if [[ -f .env ]]; then
-  source .env
-fi
+[[ -f .env ]] && source .env
+env
 
 typeset -g any_failed
 typeset -g failed
