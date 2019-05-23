@@ -21,6 +21,7 @@ sc_parse_opts_() {
   optparse_parse_ opts optalias $@
 
   typeset -gA sc_opt=(${(kv)optparse_result})
+  log_debug_ "parsed options: ${(kv)sc_opt}"
 
   [[ $sc_opt[force-tty-out] ]] && sc_tty=true
   [[ $sc_opt[force-tty-in] ]] && unset sc_pipe
@@ -41,6 +42,7 @@ sc_parse_opts_() {
   fi
 
   if [[ $sc_opt[config] ]]; then
+    log_debug_ "setting config file to $sc_opt[config]"
     sc_cfg_file="$sc_opt[config]"
     sc_exec+="--config=$sc_opt[config]"
   fi
@@ -57,4 +59,5 @@ sc_parse_opts_() {
   typeset -ga sc_trailing=(${optparse_trailing[2,-1]})
 
   unset opts optalias optparse_result optparse_trailing
+  log_debug_ "new sc_exec: $sc_exec"
 }
