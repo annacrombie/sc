@@ -1,5 +1,6 @@
 source .env
 
+typeset -g any_failed
 typeset -g failed
 typeset -g config cache
 typeset -ga tests
@@ -28,10 +29,18 @@ for file in test/*_test.zsh; do
   alias sc="sc --config=$config --cache=$cache"
   run_tests_
 
+  if [[ $failed ]]; then
+    echo "some tests failed.  Printing environment"
+    sc env
+    echo ""
+    any_failed=true
+    unset failed
+  fi
+
   tests=() config='' cache=''
 done
 
-if [[ $failed ]]; then
+if [[ $any_failed ]]; then
   echo "tests failed"
   exit 1
 else
