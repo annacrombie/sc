@@ -44,12 +44,13 @@ for file in test/*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
   alias sc="sc -V --config=$config --cache=$cache"
+  echo -n "sc aliased as: "
   whence sc
   run_tests_
 
   if [[ $failed ]]; then
     echo "some tests failed.  Printing environment"
-    sc env
+    eval "sc env"
     echo ""
     any_failed=true
     unset failed
