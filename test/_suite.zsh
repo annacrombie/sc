@@ -31,7 +31,7 @@ for file in test/*_test.zsh; do
   tests=() config='' cache=''
 done
 
-if [[  $failed ]]; then
+if [[ $failed ]]; then
   echo "tests failed"
   exit 1
 else
