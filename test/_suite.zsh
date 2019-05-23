@@ -1,7 +1,8 @@
+source .env
+
 typeset -g failed
 typeset -g config cache
 typeset -ga tests
-
 
 run_tests_() {
   typeset test comp expected
@@ -22,7 +23,7 @@ run_tests_() {
 }
 
 for file in test/*_test.zsh; do
-  echo "running ${${file:t}##.zsh}"
+  echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
   alias sc="sc --config=$config --cache=$cache"
   run_tests_
