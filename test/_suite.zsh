@@ -1,5 +1,5 @@
 [[ -f .env ]] && source .env
-env
+echo $SC_TEST_API_KEY
 
 typeset -g any_failed
 typeset -g failed
