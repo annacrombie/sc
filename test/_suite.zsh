@@ -1,5 +1,6 @@
+emulate -R zsh
+
 [[ -f .env ]] && source .env
-echo $SC_TEST_API_KEY
 
 typeset -g any_failed
 typeset -g failed
@@ -43,6 +44,7 @@ for file in test/*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
   alias sc="sc --config=$config --cache=$cache"
+  whence -w sc
   run_tests_
 
   if [[ $failed ]]; then
