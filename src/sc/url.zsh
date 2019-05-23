@@ -58,6 +58,8 @@ get_() {
   typeset bb="${sc_expiration[cache]}"
   [[ ($force || $sc_opt[force]) ]] && bb="0"
 
+  log_debug_ "$url"
+
   ret="$(wcache_ --best-by=$bb --cache=$sc_dirs[cache] \
     $key --echo-output "${url}")"
 
