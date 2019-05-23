@@ -8,6 +8,7 @@ typeset -g config cache
 typeset -ga tests
 typeset testout="$(mktemp)"
 typeset testerr="$(mktemp)"
+typeset testpat="$1"
 
 run_tests_() {
   typeset test comp expected
@@ -40,7 +41,7 @@ run_tests_() {
   done
 }
 
-for file in test/*_test.zsh; do
+for file in "test/$testpat"*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
   alias sc="sc -V --config=$config --cache=$cache"
