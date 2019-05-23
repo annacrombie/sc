@@ -6,6 +6,7 @@ typeset -g any_failed
 typeset -g failed
 typeset -g config cache
 typeset -ga tests
+typeset testout="$(mktemp)"
 typeset testerr="$(mktemp)"
 
 run_tests_() {
@@ -13,8 +14,11 @@ run_tests_() {
   for test comp expected in $tests; do
     echo -n "$test "
 
-    typeset res=$(eval "$test" 2>"$testerr")
-    if [[ $? -ne 0 ]]; then
+    setopt pipefail
+    eval "$test" >"$testout" 2>"$testerr"
+    typeset testret=$?
+    typeset res=$(cat "$testout")
+    if [[ $testret -ne 0 ]]; then
       failed=true
       echo "\e[33merrored\e[0m :("
       echo "error details:"
@@ -52,6 +56,8 @@ for file in test/*_test.zsh; do
 
   tests=() config='' cache=''
 done
+
+rm $testout $testerr
 
 if [[ $any_failed ]]; then
   echo "tests failed"
