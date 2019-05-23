@@ -1,5 +1,4 @@
 if [[ -f .env ]]; then
-  cat .env
   source .env
 fi
 
@@ -7,22 +6,33 @@ typeset -g any_failed
 typeset -g failed
 typeset -g config cache
 typeset -ga tests
+typeset testerr="$(mktemp)"
 
 run_tests_() {
   typeset test comp expected
   for test comp expected in $tests; do
     echo -n "$test "
 
-    typeset res=$(eval "$test")
+    typeset res=$(eval "$test" 2>"$testerr")
+    if [[ $? -ne 0 ]]; then
+      failed=true
+      echo "\e[33merrored\e[0m :("
+      echo "error details:"
+      cat "$testerr"
+      echo > $testerr
+      continue
+    fi
+
     eval "[[ \"${res//\"/\\\"/}\" $comp \"${expected//\"/\\\"/}\" ]]"
 
     if [[ $? -ne 0 ]]; then
       echo "\e[31mfailed\e[0m :("
       echo "'$res' does not $comp '$expected'"
       failed=true
-    else
-      echo "\e[32mpassed\e[0m"
+      continue
     fi
+
+    echo "\e[32mpassed\e[0m"
   done
 }
 
