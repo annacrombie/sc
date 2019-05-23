@@ -44,7 +44,7 @@ for file in test/*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
   alias sc="sc --config=$config --cache=$cache"
-  whence -w sc
+  whence sc
   run_tests_
 
   if [[ $failed ]]; then
