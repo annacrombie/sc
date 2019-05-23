@@ -19,6 +19,21 @@ typeset -gA sc_dirs=(
 )
 typeset -g sc_cfg_file="$sc_dirs[config]/config.zsh"
 typeset -ga sc_tmpfiles=()
+typeset -gA sc_cmd_alias=(
+  f fetch
+  F filter
+  s sort
+  d describe
+  u users
+  # followings
+  # followers
+  t tracks
+  r resolve
+  l library
+  p play
+  c count
+  # prune
+)
 
 [[ -t 1 ]] && typeset -g sc_tty=true
 [[ -t 0 ]] || typeset -g sc_pipe=true
