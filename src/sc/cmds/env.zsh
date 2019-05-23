@@ -3,6 +3,7 @@ cmd_env_() {
   typeset -a bins=(find jq mktemp ln tree zsh column)
   typeset bin
   typeset missing=()
+  setopt localoptions pipefail
 
   echo "required commands\n---"
 
