@@ -2,13 +2,24 @@ emulate -R zsh
 
 [[ -f .env ]] && source .env
 
+source 'deps/optparse/optparse.zsh'
+
+optparse_disp[banner]="sc test runner"
+optparse_disp[desc]="zsh test/_suite.zsh [args] [pattern]"
+typeset -ga opts=(
+  verbose "enable verbose output"
+)
+typeset -ga optalias=(V verbose)
+optparse_parse_ opts optalias $@
+typeset testpat="${optparse_trailing[1]}"
+[[ $optparse_result[verbose] ]] && typeset verbose="-V"
+
 typeset -g any_failed
 typeset -g failed
 typeset -g config cache
 typeset -ga tests
 typeset testout="$(mktemp)"
 typeset testerr="$(mktemp)"
-typeset testpat="$1"
 
 run_tests_() {
   typeset test comp expected
@@ -44,7 +55,7 @@ run_tests_() {
 for file in "test/$testpat"*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
-  alias sc="sc -V --config=$config --cache=$cache"
+  alias sc="sc $verbose --config=$config --cache=$cache"
   echo -n "sc aliased as: "
   whence sc
   run_tests_
