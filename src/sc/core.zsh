@@ -66,7 +66,7 @@ output_() {
     typeset cols="$(head -n 1 "$jq/$f")"
     cols="${cols##\#}"
 
-    jq_ r "$f" $args |
+    jq_ r slurp "$f" $args |
       if [[ -n $cols ]]; then
         column -s '|' -t
       else
