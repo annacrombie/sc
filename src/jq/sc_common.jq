@@ -92,8 +92,22 @@ def clean:
   end
 ;
 
+def to_table:
+  [.] | flatten | (
+    ([.[0]|keys]) + [.[] | to_entries|[.[] | (.value|tostring)]]
+  ) | [.[] | join("|")] | join("\n")
+;
+
+def is_ele(arr):
+  . as $val | arr | any(. == $val)
+;
+
+def filter_keys(ks):
+  . | to_entries | [.[] | select(.key | is_ele(ks))] | from_entries
+;
+
 def track_nice:
-  . | clean | [ .title, (.plays | tostring), .permalink ] | join("|")
+  . | clean | filter_keys(["title", "plays", "permalink"])
 ;
 
 def track_niced:
@@ -112,12 +126,7 @@ def track_niced:
 ;
 
 def user_nice:
-  [
-    .username,
-    .permalink,
-    .plan,
-    .desc
-  ] | join("|")
+  . | clean | filter_keys(["username", "permalink", "plan", "desc"])
 ;
 
 def user_niced:

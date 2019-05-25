@@ -24,8 +24,8 @@ typeset -a tests=(
 
   "sc r $user | sc --force-tty-out -t 1 t"
   =
-  'title                       plays  permalink
-Dommel Mossel - Marco Polo  2      earthlibraries/dommel-mossel-marco-polo'
+  'permalink                                plays  title
+earthlibraries/dommel-mossel-marco-polo  2      Dommel Mossel - Marco Polo'
 
   "sc r $user | sc followers | sc c"
   =
