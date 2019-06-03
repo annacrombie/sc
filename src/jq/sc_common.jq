@@ -64,6 +64,7 @@ def clean_track:
     "artist":        .user.username,
     "title":         .title,
     "go":            (.monetization_model == "SUB_HIGH_TIER"),
+    "img":           ((.artwork_url // "") | split("large") | join("t500x500")),
     "dur":           .duration,
     "ext":           "mp3",
     "_cleaned":      true
@@ -81,6 +82,7 @@ def clean_user:
     "desc":          .description | checkblank("<none>") | trim_paragraph,
     "tracks":        .track_count,
     "followers":     .followers_count,
+    "img":           ((.avatar_url // "") | split("large") | join("t500x500")),
     "last_modified": .last_modified | sctimestamp,
     "_cleaned":       true
   }
