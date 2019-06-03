@@ -63,6 +63,8 @@ def clean_track:
     "downloadable":  .downloadable,
     "artist":        .user.username,
     "title":         .title,
+    "go":            (.monetization_model == "SUB_HIGH_TIER"),
+    "dur":           .duration,
     "ext":           "mp3",
     "_cleaned":      true
   }
