@@ -44,7 +44,7 @@ def switch(uf; tf; pf):
 
 
 def isclean:
-  (._cleaned // false)
+  ._cleaned // false
 ;
 
 def clean_track:

@@ -1,4 +1,3 @@
 #col
 import "sc_common" as sc;
-"title|permalink\n" +
-(.|sc::track_nice)
+[.] | flatten | sc::lim | [.[] | sc::track_nice] | sc::to_table

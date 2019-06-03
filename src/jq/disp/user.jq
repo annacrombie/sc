@@ -1,4 +1,3 @@
 #col
 import "sc_common" as sc;
-"username|permalink|pro?|desc\n" +
-(. | sc::user_nice)
+[.] | flatten | sc::lim | [.[] | sc::user_nice] | sc::to_table
