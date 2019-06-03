@@ -23,6 +23,7 @@ die_() {
 cleanup_() {
   for dir in $sc_tmpfiles; do
     [[ -f $dir ]] && rm "$dir"
+    [[ -d $dir ]] && rm -r "$dir"
   done
 }
 
@@ -83,7 +84,7 @@ to_json_() {
 }
 
 mktmp_() {
-  typeset tmpf=$(mktemp --tmpdir=/tmp sctmp_XXXXXXXX)
+  typeset tmpf=$(mktemp $@ --tmpdir=/tmp sctmp_XXXXXXXX)
   sc_tmpfiles+="$tmpf"
 
   return_ "$tmpf"
