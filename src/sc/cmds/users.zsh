@@ -18,16 +18,15 @@ cb_user_() {
   typeset -A user=($@)
 
   to_json_ ${(kv)user}
+}
 
+cb_query_(){
+  typeset -A q=($@)
+  search_ 'users' "$q[query]"
+  split_ 'users' $returned
 }
 
 cmd_users_() {
-  if [[ ! $sc_pipe ]]; then
-    search_ 'users' $sc_trailing
-    split_ 'users' $returned
-    return
-  fi
-
   if [[ $sc_tty ]]; then
     typeset osc_tty="$sc_tty"
     unset sc_tty
@@ -38,7 +37,7 @@ cmd_users_() {
   mktmp_
   typeset tmp="$returned"
 
-  eval_loop_ user cb_user_ track cb_track_ > $tmp
+  eval_loop_ user cb_user_ track cb_track_ query cb_query_ > $tmp
 
   typeset -g sc_tty=$osc_tty
   output_ "$tmp" 'users'

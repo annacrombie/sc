@@ -15,13 +15,13 @@ cb_user_() {
   output_ "$file" 'tracks'
 }
 
-cmd_tracks_() {
-  if [[ ! $sc_pipe ]]; then
-    search_ 'tracks' $sc_trailing
-    split_ 'tracks' $returned
-    return
-  fi
+cb_query_(){
+  typeset -A q=($@)
+  search_ 'tracks' "$q[query]"
+  split_ 'tracks' $returned
+}
 
+cmd_tracks_() {
   if [[ $sc_tty ]]; then
     typeset osc_tty="$sc_tty"
     unset sc_tty
@@ -29,7 +29,7 @@ cmd_tracks_() {
 
   mktmp_
   typeset tmp="$returned"
-  eval_loop_ user cb_user_ track cb_track_ > $tmp
+  eval_loop_ user cb_user_ track cb_track_ query cb_query_ > $tmp
 
   typeset -g sc_tty=$osc_tty
   output_ "$tmp" 'tracks'

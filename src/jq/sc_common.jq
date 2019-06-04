@@ -110,6 +110,10 @@ def filter_keys(ks):
   . | to_entries | [.[] | select(.key | is_ele(ks))] | from_entries
 ;
 
+def query_nice:
+  . | clean | filter_keys(["query"])
+;
+
 def track_nice:
   . | clean | filter_keys(["title", "plays", "permalink"])
 ;
