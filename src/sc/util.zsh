@@ -69,9 +69,11 @@ to_json_() {
   typeset -A obj=($@)
   typeset tmp k v
   typeset -a out=()
+
   for k v in ${(kv)obj}; do
     k=${k//\"/\\\"}
-    if [[ $v = <-> ]]; then
+
+    if [[ ($v = <-> || $v = true || $v = false || $v = null) ]]; then
       printf -v tmp '"%s":%s' $k $v
     else
       printf -v tmp '"%s":"%s"' $k ${v//\"/\\\"}
