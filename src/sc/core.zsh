@@ -79,6 +79,8 @@ output_() {
 }
 
 eval_loop_() {
+  need_pipe_
+
   typeset -A callbacks=($@)
 
   jq_ r s '. | sc::zstream' - | while read -r line; do

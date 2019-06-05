@@ -24,10 +24,7 @@ cb_track_() {
 }
 
 cmd_fetch_() {
-  if [[ ! $sc_pipe ]]; then
-    $sc_exec resolve $sc_trailing | $sc_exec tracks | $sc_exec fetch
-    return
-  fi
+  need_pipe_
 
   typeset -g progressj=""
   [[ $sc_tty ]] && progress="--bar"

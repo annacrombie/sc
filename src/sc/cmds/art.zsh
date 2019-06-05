@@ -22,10 +22,6 @@ fetch_art_() {
 }
 
 cmd_art_() {
-  if [[ ! $sc_pipe ]]; then
-    die_ "no data"
-  fi
-
   mktmp_ -d
   typeset -g tmpdir="$returned"
 

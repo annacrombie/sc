@@ -1,5 +1,6 @@
 #get followings of input users
 cb_user_() {
+  need_pipe_
   typeset -A user=($@)
 
   get_ "users/$user[id]/followings" limit 200

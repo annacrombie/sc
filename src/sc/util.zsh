@@ -20,6 +20,10 @@ die_() {
   exit 1
 }
 
+need_pipe_() {
+  [[ ! $sc_pipe ]] && die_ "no data"
+}
+
 cleanup_() {
   for dir in $sc_tmpfiles; do
     if [[ -f $dir ]]; then
