@@ -16,4 +16,4 @@ clean:
 	find src -name "*.zwc" -type f -exec rm -f {} +
 .PHONY: test
 test:
-	zsh test/_suite.zsh
+	zsh util/test.zsh
