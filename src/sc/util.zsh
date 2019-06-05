@@ -22,8 +22,11 @@ die_() {
 
 cleanup_() {
   for dir in $sc_tmpfiles; do
-    [[ -f $dir ]] && rm "$dir"
-    [[ -d $dir ]] && rm -r "$dir"
+    if [[ -f $dir ]]; then
+      rm "$dir"
+    elif [[ -d $dir ]]; then
+      rm -r "$dir"
+    fi
   done
 }
 
