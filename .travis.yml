@@ -6,8 +6,7 @@ before_install:
 script:
 - make
 - sudo make install
-- sc --config=test/cfg/offline.zsh env
-- util/check.zsh
+- make test
 env:
   global:
     secure: bFR5lJs/O09+A50QB6lRLPWl4pjI+QNuyS7DweLXYbEDW5XeLZXQrJQUCNy1bn7V3x50XQs+tEaCs4PL+SHyxyd03nAdtbUb9QhDu/BBJzp8lFgTnClAewiEXSyJA5R1uVEZy/M3nMQTQyFl+oIy5xoKW/T15N3jHLqzcXhw1wxrWuy+6zBq2xanE8kVjtBzjmaVgLjbDy/cspQEG5WkOidHRZyFKmuwbSuK0aAyYJupXaGq0vBR/H50XdMMHDKnOC0S52qPK4ktJ+WQLlTYHL66WTQO/prutpTkAy3upX5cIXSpvunpQJkYDreVgBt/nuNgAD/3YdALxYTChQxNzlQsZR3eZ4gD75BQHZI5kNTabBQkmO2s20KFRXFQ597TtbwGsJHn1kJ8y60uvkWYTtWOJdHgdlxQOzlDyuwgfnqxoS73QxtcnOTkX+KyzUsfBwmkwhhv6nUYngueCR/2psNA1m5F5fIeb2d55vmPan98W4CzvgM9diTO8+tLpHnZjReiWcB8ojbdiSXBSP6B+mm4Jp5l85xM+StyqPAcr7fR7x1YLgE4gd7lhOlkviYV6kJq5WBJj3irG/yUTyum4yfrBAMQwkqnvRqnX0URSKGjvZ/+I1SYmOpBEv4wfMVOQy+4aZH6x+jWTP3Pdvh5AtDnTnnqWpFMpJ2xPz7eB1Y=
