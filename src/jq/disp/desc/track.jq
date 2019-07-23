@@ -1,3 +1,3 @@
 #
-import "sc_common" as sc;
-.|sc::track_niced
+import "mu_common" as mu;
+.|mu::track_niced

@@ -1,8 +1,8 @@
 #col
-import "sc_common" as sc;
+import "mu_common" as mu;
 "type|name|desc\n" +
-([.] | flatten | sc::lim | [.[] |
-  sc::switch(
+([.] | flatten | mu::lim | [.[] |
+  mu::switch(
     ["user", .username, .desc];
     ["track", .title,   .desc];
     ["plist", "", ""]

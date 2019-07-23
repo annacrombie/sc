@@ -1,3 +1,3 @@
 #col
-import "sc_common" as sc;
-[.] | flatten | sc::lim | [.[] | sc::track_nice] | sc::to_table
+import "mu_common" as mu;
+[.] | flatten | mu::lim | [.[] | mu::track_nice] | mu::to_table

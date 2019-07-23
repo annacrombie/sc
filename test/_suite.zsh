@@ -4,7 +4,7 @@ emulate -R zsh
 
 source 'deps/optparse/optparse.zsh'
 
-optparse_disp[banner]="sc test runner"
+optparse_disp[banner]="mu test runner"
 optparse_disp[desc]="zsh test/_suite.zsh [args] [pattern]"
 typeset -ga opts=(
   verbose "enable verbose output"
@@ -55,14 +55,14 @@ run_tests_() {
 for file in "test/$testpat"*_test.zsh; do
   echo "\e[35mrunning ${${file:t}##.zsh}\e[0m\n---"
   source "$file"
-  alias sc="sc $verbose --config=$config --cache=$cache"
-  echo -n "sc aliased as: "
-  whence sc
+  alias mu="mu $verbose --config=$config --cache=$cache"
+  echo -n "mu aliased as: "
+  whence mu
   run_tests_
 
   if [[ $failed ]]; then
     echo "some tests failed.  Printing environment"
-    eval "sc env"
+    eval "mu env"
     echo ""
     any_failed=true
     unset failed

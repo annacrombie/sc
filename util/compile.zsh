@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
-typeset -g sc_path="${${0:A:h}:h}"
+typeset -g mu_path="${${0:A:h}:h}"
 
-for file in "$sc_path"/src/**/*.zsh; do
+for file in "$mu_path"/src/**/*.zsh; do
   zcompile "$file"
 done

@@ -1,2 +1,2 @@
-import "sc_common" as sc;
-[.] | flatten | sc::lim | .[] | sc::clean
+import "mu_common" as mu;
+[.] | flatten | mu::lim | .[] | mu::clean

@@ -5,15 +5,15 @@ typeset user="sc-api-test"
 [[ -d "$cache" ]] && rm -r "$cache"/*
 
 typeset -ga tests=(
-  "sc r sc-api-test | jq -Mr '.username'"
+  "mu r sc-api-test | jq -Mr '.username'"
   =
   "test-account"
 
-  "sc r sc-api-test | sc t | sc c"
+  "mu r sc-api-test | mu t | mu c"
   =
   1
 
-  "sc r sc-api-test | sc -t 1 t | jq -Mr '.title'"
+  "mu r sc-api-test | mu -t 1 t | jq -Mr '.title'"
   =
   track
 )

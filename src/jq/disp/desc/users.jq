@@ -1,3 +1,3 @@
 #
-import "sc_common" as sc;
-.|sc::lim|[ .[] | sc::user_niced]|join("\n")
+import "mu_common" as mu;
+.|mu::lim|[ .[] | mu::user_niced]|join("\n")

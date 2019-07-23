@@ -3,9 +3,9 @@ all:
 	zsh util/compile.zsh
 .PHONY: install
 install:
-	ln -sfr sc /usr/local/bin/sc
-	bzip2 -k doc/sc.1
-	mv doc/sc.1.bz2 /usr/local/share/man/man1/sc.1.bz2
+	ln -sfr mu /usr/local/bin/mu
+	bzip2 -k doc/mu.1
+	mv doc/mu.1.bz2 /usr/local/share/man/man1/mu.1.bz2
 	mandb
 .PHONY: update
 update:

@@ -1,9 +1,9 @@
-# sc
+# mu
 
-A lightweight soundcloud client, conforming to unix philosophy.
+A lightweight client for music streaming services
 
 ```sh
-$ sc resolve earthlibraries | sc followers | sc -t 2 filter '.plan != "Pro"' | sc describe
+$ mu resolve earthlibraries | mu followers | mu -t 2 filter '.plan != "Pro"' | mu describe
 type: user, permalink: flusnoix_jemawa
   jemawa
   plan: Free / tracks: 8 / followers: 135
@@ -15,7 +15,7 @@ type: user, permalink: sister-sniffle
 ```
 
 ```sh
-$ sc r tennysonmusic | sc tracks | sc -t 3 sort plays desc
+$ mu r tennysonmusic | mu tracks | mu -t 3 sort plays desc
 type   name        desc
 track  With You    7" vinyl order:
 track  Lay-by      hey. i hope this song reminds you to slow down. sometimes the dark can be beauti
@@ -37,13 +37,13 @@ Also a soundcloud `CLIENT_ID` is required, you can get one by following [these
 instructions](https://github.com/Soundnode/soundnode-app#configuration).
 
 ```
-$ sc_prefix=~/.local/share
-$ mkdir -p $sc_prefix
-$ git clone --recurse-submodules <repo> $sc_prefix/sc
-$ sudo make -C $sc_prefix/sc install
+$ mu_prefix=~/.local/share
+$ mkdir -p $mu_prefix
+$ git clone --recurse-submodules <repo> $mu_prefix/mu
+$ sudo make -C $mu_prefix/mu install
 ```
 
-### `~/.config/sc/config.zsh`
+### `~/.config/mu/config.zsh`
 
 ```zsh
 export SOUNDCLOUD_CLIENT_ID="<your client id>"
@@ -52,5 +52,5 @@ export SOUNDCLOUD_CLIENT_ID="<your client id>"
 # Usage
 
 ```zsh
-$ sc -h
+$ mu -h
 ```

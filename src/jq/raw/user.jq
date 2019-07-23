@@ -1,2 +1,2 @@
-import "sc_common" as sc;
-. | sc::clean
+import "mu_common" as mu;
+. | mu::clean
