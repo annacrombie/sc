@@ -6,4 +6,4 @@
 	url = https://github.com/annacrombie/wcache
 [submodule "deps/zsh-util"]
 	path = deps/zsh-util
-	url = ../util
+	url = https://github.com/annacrombie/zsh-util
