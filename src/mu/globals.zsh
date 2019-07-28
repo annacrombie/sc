@@ -1,8 +1,6 @@
 typeset -g prog_name="mu"
 typeset -g mu_version="0.1.0"
 typeset -g mu_api_proto="https"
-typeset -g mu_backend="sc"
-typeset -g mu_backend_path="$mu_path/src/back/$mu_backend"
 typeset -g mu_verbosity=0
 typeset -gA mu_expiration=(
   cache   3600
@@ -16,10 +14,7 @@ typeset -gA mu_dirs=(
   jq     "$mu_path/src/jq"
   config "$HOME/.config/mu"
 )
-typeset -g mu_cmd_dirs=(
-  "$mu_path/src/cmds"
-  "$mu_backend_path/cmds"
-)
+typeset -g mu_cmd_dirs=("$mu_path/src/cmds")
 typeset -g mu_cfg_file="$mu_dirs[config]/config.zsh"
 typeset -ga mu_tmpfiles=()
 typeset -gA mu_cmd_alias=(

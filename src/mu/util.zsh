@@ -1,3 +1,11 @@
+load_backend_() {
+  typeset -g mu_backend="$1"
+  typeset -g mu_backend_path="$mu_path/src/back/$mu_backend"
+  mu_cmd_dirs+="$mu_backend_path/cmds"
+  source "$mu_backend_path/main.zsh"
+  set_cmd_helpstr_
+}
+
 output_() {
   typeset data=$1
   typeset args=("$data" limit $mu_opt[take])

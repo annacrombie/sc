@@ -1,8 +1,6 @@
 mu_cli_main_() {
   mu_parse_opts_ $@
 
-  source "$mu_backend_path/main.zsh"
-
   [[ "$mu_cmd_alias[${mu_opt[cmd]}]" ]] && \
     mu_opt[cmd]="$mu_cmd_alias[${mu_opt[cmd]}]"
 
