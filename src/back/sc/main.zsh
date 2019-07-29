@@ -44,12 +44,12 @@ resolve_() {
     fi
   fi
 
-  get_api_url_ 'resolve' 'url' "$sc_api_proto://soundcloud.com/$pl"
+  get_api_url_ 'resolve' 'url' "$mu_api_proto://soundcloud.com/$pl"
   typeset url="$returned"
 
   rsv="$(wget -qSO- --spider --max-redirect=0 "$url" 2>&1 | \
     grep Location | \
-    sed "s/.*Location: $sc_api_proto:\/\/$sc_api_base\/\(.*\)?.*/\1/g")"
+    sed "s/.*Location: $mu_api_proto:\/\/$sc_api_base\/\(.*\)?.*/\1/g")"
 
   if [[ -z "$rsv" ]]; then
     if [[ $mu_expiration[resolve] != inf ]]; then
