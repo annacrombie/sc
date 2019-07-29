@@ -79,3 +79,33 @@ get_api_url_() {
 
   return_ "${sc_api}/${endpoint}?${returned}"
 }
+
+split_() {
+  typeset ep=$1
+  typeset data=$2
+  typeset -a ids=($(jq -Mr '.[] | .id' $data))
+  typeset i=0
+
+  mkdir -p "${mu_dirs[api]}/$ep"
+
+  for id in $ids; do
+    typeset file="${mu_dirs[api]}/$ep/$id$"
+    [[ -f $file ]] && is_fresh_ "$file" "$mu_expiration[cache]" && continue
+
+    jq -Mc ".[$i]" "$data" > "$file"
+    ((i+=1))
+  done
+}
+
+extract_collection_() {
+  typeset data="$1"
+
+  is_coll=$(jq -Mrf "${mu_dirs[jq]}/is_collection.jq" "$data")
+  [[ $is_coll = false ]] && return
+
+  mktmp_
+  typeset f="$returned"
+
+  jq_ c s ".collection" "$data" > "$f"
+  mv "$f" "$data"
+}
